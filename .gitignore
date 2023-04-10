@@ -1,0 +1,6 @@
+.history/
+node_modules/
+tsconfig.tsbuildinfo
+__coverage
+dist
+.env.testing
