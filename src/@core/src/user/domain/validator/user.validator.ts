@@ -4,6 +4,7 @@ import {
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
 } from "class-validator";
@@ -17,7 +18,8 @@ export class UserRules {
 
   @IsNotEmpty()
   @IsBoolean()
-  email_confirmation: boolean;
+  @IsOptional()
+  email_confirmation?: boolean;
 
   @IsString()
   @IsNotEmpty()
@@ -43,10 +45,10 @@ export class UserValidator extends ClassValidatorFields<UserRules> {
   }
 }
 
-export class UserVAlidatorFactory {
+export class UserValidatorFactory {
   static create() {
     return new UserValidator();
   }
 }
 
-export default UserVAlidatorFactory;
+export default UserValidatorFactory;

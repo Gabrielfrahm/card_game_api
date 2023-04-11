@@ -5,12 +5,22 @@
   "main": "index.js",
   "imports": {
     "#seedwork/domain": "./dist/@seedwork/domain/index.js",
-    "#seedwork/*": "./dist/@seedwork/*.js"
+    "#seedwork/application": "./dist/@seedwork/application/index.js",
+    "#seedwork/infra": "./dist/@seedwork/infra/index.js",
+    "#seedwork/*": "./dist/@seedwork/*.js",
+    "#user/domain": "./dist/user/domain/index.js",
+    "#user/application": "./dist/user/application/index.js",
+    "#user/infra": "./dist/user/infra/index.js",
+    "#user/*": "./dist/user/*.js"
+
   },
   "exports": {
     "./@seedwork/application": "./dist/@seedwork/application/index.js",
     "./@seedwork/domain": "./dist/@seedwork/domain/index.js",
-    "./@seedwork/infra": "./dist/@seedwork/infra/index.js"
+    "./@seedwork/infra": "./dist/@seedwork/infra/index.js",
+    "./user/infra": "./dist/user/infra/index.js",
+    "./user/application": "./dist/user/application/index.js",
+    "./user/domain": "./dist/user/domain/index.js"
   },
   "typesVersions": {
     ">=4.0": {
@@ -22,6 +32,15 @@
       ],
       "@seedwork/infra": [
         "./dist/@seedwork/infra/index.d.ts"
+      ],
+      "user/infra": [
+        "./dist/user/infra/index.d.ts"
+      ],
+      "user/domain": [
+        "./dist/user/domain/index.d.ts"
+      ],
+      "user/application": [
+        "./dist/user/application/index.d.ts"
       ]
     }
   },
@@ -42,6 +61,7 @@
   "devDependencies": {
     "@swc/core": "^1.3.49",
     "@swc/jest": "^0.2.24",
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "@types/uuid": "^9.0.1",
@@ -51,6 +71,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "uuid": "^9.0.0"
   }

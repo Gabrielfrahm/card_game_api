@@ -1,17 +1,37 @@
-import { Entity, UniqueEntityId } from "#seedwork/domain";
+import {
+  Entity,
+  EntityValidationError,
+  UniqueEntityId,
+} from "#seedwork/domain";
+import { Hasher } from "#seedwork/infra";
+
+import UserValidatorFactory from "../validator/user.validator";
 
 export type UserProps = {
   email: string;
-  email_confirmation: boolean;
+  email_confirmation?: boolean;
   password: string;
   name: string;
   created_at: Date;
 };
 
 export class User extends Entity<UserProps> {
-  constructor(public readonly props: UserProps, id?: UniqueEntityId) {
+  constructor(
+    private readonly hasher: Hasher,
+    public readonly props: UserProps,
+    id?: UniqueEntityId
+  ) {
+    User.validate(props);
     super(props, id);
-    this.props.email_confirmation = false;
+    this.props.email_confirmation = this.email_confirmation ?? false;
+  }
+
+  static validate(props: UserProps) {
+    const validator = UserValidatorFactory.create();
+    const isValid = validator.validate(props);
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors);
+    }
   }
 
   get email(): string {
@@ -20,6 +40,11 @@ export class User extends Entity<UserProps> {
 
   get password(): string {
     return this.props.password;
+  }
+
+  async setPassword(password: string) {
+    const hashedPassword = await this.hasher.hash(password);
+    this.props.password = hashedPassword;
   }
 
   get name(): string {
@@ -39,6 +64,6 @@ export class User extends Entity<UserProps> {
   }
 
   private set email_confirmation(value: boolean) {
-    this.props.email_confirmation = value ?? false;
+    this.props.email_confirmation = value;
   }
 }

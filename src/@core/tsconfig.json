@@ -4,8 +4,11 @@
     "baseUrl": "./src",
     "paths": {
       "#seedwork/*": [
-        "./@seedwork/*"
+        "./@seedwork/*",
       ],
+      "#user/*": [
+        "./user/*"
+      ]
     },
     "outDir": "./dist",
   },

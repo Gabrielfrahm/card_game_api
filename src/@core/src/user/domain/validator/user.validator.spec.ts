@@ -1,11 +1,11 @@
-import UserVAlidatorFactory, {
+import UserValidatorFactory, {
   UserRules,
   UserValidator,
 } from "./user.validator";
 
 describe("User validator test unit", () => {
   let validator: UserValidator;
-  beforeEach(() => (validator = UserVAlidatorFactory.create()));
+  beforeEach(() => (validator = UserValidatorFactory.create()));
   test("invalidation cases for email", () => {
     expect({ validator, data: { email: null } }).containsErrorMessages({
       email: [

@@ -1,6 +1,6 @@
 import { validate as validateUUid } from "uuid";
-import { UniqueEntityId } from "../value-object";
-import Entity from "./entity";
+import { UniqueEntityId } from "../../value-object";
+import Entity from "../entity";
 class StubEntity extends Entity<{ prop1: string; prop2: number }> {}
 describe("entity uni test", () => {
   it("should set props  and id", () => {
