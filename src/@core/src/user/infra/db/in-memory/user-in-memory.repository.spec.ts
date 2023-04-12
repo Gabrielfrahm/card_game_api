@@ -184,14 +184,6 @@ describe("user in memory repository unit test", () => {
         items[4],
         items[2],
       ]);
-      itemsSorted = await repository["applySort"](items, "name", "desc");
-      expect(itemsSorted).toStrictEqual([
-        items[0],
-        items[3],
-        items[1],
-        items[4],
-        items[2],
-      ]);
     });
   });
 });

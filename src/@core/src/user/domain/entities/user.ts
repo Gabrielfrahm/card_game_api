@@ -46,9 +46,15 @@ export class User extends Entity<UserProps> {
     if (!isValid) {
       throw new EntityValidationError(updateValidator.errors);
     }
-    this.props.email = email;
-    this.props.name = name;
-    this.props.password = password;
+    if (email) {
+      this.props.email = email;
+    }
+    if (name) {
+      this.props.name = name;
+    }
+    if (password) {
+      this.props.password = password;
+    }
   }
 
   get email(): string {

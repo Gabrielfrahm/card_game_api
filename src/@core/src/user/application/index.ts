@@ -2,4 +2,4 @@
 
 export * from './dtos';
 export * from './mappers';
-export * from './usecase';
+export * from './usecases';
