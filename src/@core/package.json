@@ -12,7 +12,6 @@
     "#user/application": "./dist/user/application/index.js",
     "#user/infra": "./dist/user/infra/index.js",
     "#user/*": "./dist/user/*.js"
-
   },
   "exports": {
     "./@seedwork/application": "./dist/@seedwork/application/index.js",

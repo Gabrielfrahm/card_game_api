@@ -8,7 +8,7 @@ import {
   IsString,
   MaxLength,
 } from "class-validator";
-import { UserProps } from "../entities/user";
+import { UserProps } from "../../entities/user";
 
 export class UserRules {
   @IsString()

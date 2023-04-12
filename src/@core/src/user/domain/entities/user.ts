@@ -4,8 +4,8 @@ import {
   UniqueEntityId,
 } from "#seedwork/domain";
 import { Hasher } from "#seedwork/infra";
-
-import UserValidatorFactory from "../validator/user.validator";
+import UserValidatorFactory from "../validator/create/user.validator";
+import UserUpdateValidatorFactory from "../validator/update/user-update.validator";
 
 export type UserProps = {
   email: string;
@@ -13,6 +13,12 @@ export type UserProps = {
   password: string;
   name: string;
   created_at: Date;
+};
+
+export type UpdateUser = {
+  email?: string;
+  password?: string;
+  name?: string;
 };
 
 export class User extends Entity<UserProps> {
@@ -32,6 +38,17 @@ export class User extends Entity<UserProps> {
     if (!isValid) {
       throw new EntityValidationError(validator.errors);
     }
+  }
+
+  update({ email, name, password }: UpdateUser): void {
+    const updateValidator = UserUpdateValidatorFactory.create();
+    const isValid = updateValidator.validate({ email, name, password });
+    if (!isValid) {
+      throw new EntityValidationError(updateValidator.errors);
+    }
+    this.props.email = email;
+    this.props.name = name;
+    this.props.password = password;
   }
 
   get email(): string {

@@ -151,4 +151,28 @@ describe("User Unit test", () => {
     });
     expect(user.created_at).toBe(created_at);
   });
+
+  test("should be update name and description and password field", async () => {
+    const hasher = new StubHasher();
+
+    const user = new User(hasher, {
+      email: "test@test.com",
+      email_confirmation: true,
+      password: "12346",
+      name: "some name",
+      created_at: new Date(),
+    });
+    await user.setPassword("12346");
+
+    user.update({
+      email: "new@email.com",
+      name: "updated user",
+      password: "123456789",
+    });
+    await user.setPassword("123456789");
+
+    expect(user.email).toBe("new@email.com");
+    expect(user.name).toBe("updated user");
+    expect(user.password).not.toBe("123456789");
+  });
 });

@@ -8,6 +8,9 @@
     "paths": {
       "#seedwork/*": [
         "./@seedwork/*"
+      ],
+      "#user/*": [
+        "./user/*"
       ]
     }
   }

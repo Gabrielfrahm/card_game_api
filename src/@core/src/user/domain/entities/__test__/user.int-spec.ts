@@ -229,5 +229,20 @@ describe("User Integration test", () => {
       expect(spySetPassword).toHaveBeenCalledTimes(1);
       expect(spyHasher).toHaveBeenCalledTimes(1);
     });
+
+    it("should a valid user update", () => {
+      expect.assertions(0);
+      const hasher = new BcryptAdapter(12);
+
+      const user = new User(hasher, {
+        email: "test@teste.com",
+        name: "some name",
+        password: "123456",
+        created_at: new Date(),
+      });
+      user.update({ email: "some@email.com" });
+      user.update({ name: "some name" });
+      user.update({ password: "some password" });
+    });
   });
 });
