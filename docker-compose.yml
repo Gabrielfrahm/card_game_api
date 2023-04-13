@@ -4,7 +4,7 @@ services:
   app:
     build: .
     container_name: card-game-app
-    # command: .docker/start.sh
+    command: .docker/start.sh
     volumes:
       - .:/home/node/app
     ports:
