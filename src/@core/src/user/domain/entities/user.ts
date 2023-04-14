@@ -12,7 +12,7 @@ export type UserProps = {
   email_confirmation?: boolean;
   password: string;
   name: string;
-  created_at: Date;
+  created_at?: Date;
 };
 
 export type UpdateUser = {
@@ -30,6 +30,7 @@ export class User extends Entity<UserProps> {
     User.validate(props);
     super(props, id);
     this.props.email_confirmation = this.email_confirmation ?? false;
+    this.props.created_at = this.created_at ?? new Date();
   }
 
   static validate(props: UserProps) {

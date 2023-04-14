@@ -55,9 +55,8 @@
     "cti": "cti",
     "cti:core": "sh ./cti.sh",
     "prisma:combine": "node ./src/@seedwork/infra/db/prisma/combine.ts",
-    "prisma:migrate": "npx prisma migrate dev --name init --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=./src/@seedwork/infra/db/prisma/schema.prisma"
-
   },
   "author": "",
   "license": "ISC",
@@ -79,6 +78,7 @@
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "install": "^0.13.0",
+    "jest-mock-extended": "^3.0.4",
     "prisma": "^4.12.0",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"

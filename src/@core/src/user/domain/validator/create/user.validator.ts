@@ -32,7 +32,8 @@ export class UserRules {
 
   @IsNotEmpty()
   @IsDate()
-  created_at: Date;
+  @IsOptional()
+  created_at?: Date;
 
   constructor(data: UserProps) {
     Object.assign(this, data);
