@@ -1,9 +1,11 @@
 {
     "cSpell.words": [
+        "dtos",
         "Encrypter",
         "hasher",
         "Hasher",
         "hesher",
-        "seedwork"
+        "seedwork",
+        "usecase"
     ]
 }

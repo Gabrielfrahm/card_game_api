@@ -1,5 +1,6 @@
 import { UniqueEntityId } from "#seedwork/domain";
-import { Hasher } from "#seedwork/infra";
+import { Hasher } from "#seedwork/infra/cryptography";
+
 import { User } from "../user";
 
 class StubHasher implements Hasher {

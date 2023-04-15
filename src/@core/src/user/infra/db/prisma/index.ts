@@ -1,4 +1,4 @@
 // created from 'create-ts-index'
 
-export * from './user-model.mapper';
-export * from './user.prisma';
+export * from "./user-model.mapper";
+export * from "./user-prisma";

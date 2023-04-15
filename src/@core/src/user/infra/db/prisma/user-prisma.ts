@@ -24,11 +24,22 @@ export class UserPrismaRepository implements UserRepository.Repository {
   async findById(id: string | UniqueEntityId): Promise<User> {
     const _id = `${id}`;
     const model = await this._get(_id);
+
     return UserModelMapper.toEntity(model);
   }
 
   async findAll(): Promise<User[]> {
-    const models = await this.userModel.user.findMany();
+    const models = await this.userModel.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
     return models.map((item) => UserModelMapper.toEntity(item));
   }
 
@@ -48,21 +59,42 @@ export class UserPrismaRepository implements UserRepository.Repository {
   async delete(id: string | UniqueEntityId): Promise<void> {
     const _id = `${id}`;
     await this._get(_id);
-    this.userModel.user.delete({ where: { id: _id } });
+    await this.userModel.user.delete({ where: { id: _id } });
   }
 
   async search(
     props: UserRepository.SearchParams
   ): Promise<UserRepository.UserSearchResult> {
-    throw new Error("Method not implemented.");
+    const skip = (props.page - 1) * props.per_page;
+    const take = props.per_page;
+    console.log(skip);
+    const user = await this.userModel.user.findMany({
+      ...(props.filter && {
+        where: {
+          [props.column]: {
+            contains: props.filter,
+            mode: "insensitive",
+          },
+        },
+      }),
+      orderBy: {
+        [props.sort ?? "created_at"]: props.sort_dir ?? "desc",
+      },
+      take: take,
+      skip: skip,
+    });
+
+    console.log(user);
+    throw new Error(`not implemented`);
   }
 
   private async _get(id: string) {
-    const user = this.userModel.user.findFirst({
+    const user = await this.userModel.user.findFirst({
       where: {
         id: id,
       },
     });
+
     if (!user) {
       throw new NotFoundError(`Entity Not Found Using ID ${id}`);
     }

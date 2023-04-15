@@ -5,7 +5,7 @@ CREATE TABLE "users" (
     "email_confirmation" BOOLEAN NOT NULL,
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "created_at" DATETIME NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

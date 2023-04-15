@@ -1,4 +1,4 @@
-import { BcryptAdapter } from "../../../infra/index";
+import { BcryptAdapter } from "../../../infra/cryptography/bcrypt-adapter";
 import { User } from "../user";
 
 describe("User Integration test", () => {

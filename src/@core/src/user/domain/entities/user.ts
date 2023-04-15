@@ -3,7 +3,8 @@ import {
   EntityValidationError,
   UniqueEntityId,
 } from "#seedwork/domain";
-import { Hasher } from "#seedwork/infra";
+import { Hasher } from "#seedwork/infra/cryptography";
+
 import UserValidatorFactory from "../validator/create/user.validator";
 import UserUpdateValidatorFactory from "../validator/update/user-update.validator";
 

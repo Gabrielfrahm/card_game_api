@@ -1,4 +1,4 @@
-import { Hasher } from "#seedwork/infra";
+import { Hasher } from "#seedwork/infra/cryptography";
 import bcrypt from "bcrypt";
 
 export class BcryptAdapter implements Hasher {

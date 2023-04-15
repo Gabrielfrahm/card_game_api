@@ -4,5 +4,5 @@ export type UserOutput = {
   email_confirmation?: boolean;
   name: string;
   password: string;
-  created_at: Date;
+  created_at?: Date;
 };
