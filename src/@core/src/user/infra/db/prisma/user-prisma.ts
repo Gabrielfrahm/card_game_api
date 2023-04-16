@@ -67,13 +67,12 @@ export class UserPrismaRepository implements UserRepository.Repository {
   ): Promise<UserRepository.UserSearchResult> {
     const skip = (props.page - 1) * props.per_page;
     const take = props.per_page;
-    console.log(skip);
-    const user = await this.userModel.user.findMany({
+
+    const users = await this.userModel.user.findMany({
       ...(props.filter && {
         where: {
           [props.column]: {
             contains: props.filter,
-            mode: "insensitive",
           },
         },
       }),
@@ -84,8 +83,16 @@ export class UserPrismaRepository implements UserRepository.Repository {
       skip: skip,
     });
 
-    console.log(user);
-    throw new Error(`not implemented`);
+    return new UserRepository.UserSearchResult({
+      items: users.map((item) => UserModelMapper.toEntity(item)),
+      current_page: props.page,
+      per_page: props.per_page,
+      total: users.length,
+      filter: props.filter,
+      sort: props.sort,
+      sort_dir: props.sort_dir,
+      column: props.column,
+    });
   }
 
   private async _get(id: string) {
