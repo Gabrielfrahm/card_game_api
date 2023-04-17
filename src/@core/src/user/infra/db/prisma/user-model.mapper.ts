@@ -1,7 +1,7 @@
 import { EntityValidationError, UniqueEntityId } from "#seedwork/domain";
 import { LoadEntityError } from "#seedwork/domain/errors/load-entity.error";
 import { User as Entity } from "#user/domain";
-import { BcryptAdapter } from "#user/infra/cryptography";
+import { BcryptAdapter } from "#user/infra/cryptography/index";
 import { User } from "@prisma/client";
 
 export class UserModelMapper {

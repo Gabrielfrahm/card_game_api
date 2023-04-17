@@ -5,7 +5,9 @@
         "hasher",
         "Hasher",
         "hesher",
+        "nestjs",
         "seedwork",
-        "usecase"
+        "usecase",
+        "usecases"
     ]
 }

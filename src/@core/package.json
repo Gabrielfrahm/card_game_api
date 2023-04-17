@@ -17,9 +17,9 @@
     "./@seedwork/application": "./dist/@seedwork/application/index.js",
     "./@seedwork/domain": "./dist/@seedwork/domain/index.js",
     "./@seedwork/infra": "./dist/@seedwork/infra/index.js",
-    "./user/infra": "./dist/user/infra/index.js",
     "./user/application": "./dist/user/application/index.js",
-    "./user/domain": "./dist/user/domain/index.js"
+    "./user/domain": "./dist/user/domain/index.js",
+    "./user/infra": "./dist/user/infra/index.js"
   },
   "typesVersions": {
     ">=4.0": {
@@ -32,14 +32,14 @@
       "@seedwork/infra": [
         "./dist/@seedwork/infra/index.d.ts"
       ],
-      "user/infra": [
-        "./dist/user/infra/index.d.ts"
+      "user/application": [
+        "./dist/user/application/index.d.ts"
       ],
       "user/domain": [
         "./dist/user/domain/index.d.ts"
       ],
-      "user/application": [
-        "./dist/user/application/index.d.ts"
+      "user/infra": [
+        "./dist/user/infra/index.d.ts"
       ]
     }
   },

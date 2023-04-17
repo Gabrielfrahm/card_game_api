@@ -2,8 +2,8 @@ import {
   SearchableRepositoryInterface,
   SearchParams as DefaultSearchParams,
   SearchResult as DefaultSearchResult,
-} from "#seedwork/domain/repository";
-import { User } from "../entities";
+} from "#seedwork/domain/repositories/index";
+import { User } from "../entities/user";
 
 export namespace UserRepository {
   export type Filter = string;

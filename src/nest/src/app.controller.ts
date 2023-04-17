@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+// import { CreateUserUseCase } from 'core/user/application';
 
 @Controller()
 export class AppController {
@@ -7,6 +8,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    // console.log(CreateUserUseCase);
     return this.appService.getHello();
   }
 }
