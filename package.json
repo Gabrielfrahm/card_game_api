@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "workspaces": [
-    "./src/@core"
+    "./src/@core",
+    "./src/nest"
   ],
   "dependencies": {
     "abbrev": "^1.1.1",
