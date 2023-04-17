@@ -1,12 +1,19 @@
-import { Entity, UniqueEntityId } from "#seedwork/domain";
+import { UniqueEntityId } from "#seedwork/domain";
 import { PrismaClient } from "@prisma/client";
 import { UserModelMapper } from "../user-model.mapper";
 import { User } from "#user/domain";
 import { BcryptAdapter } from "#user/infra/cryptography";
+import { prismaClient } from "#seedwork/infra";
 
 describe("User Model Mapper  unit test", () => {
-  let prismaClient = new PrismaClient();
-  afterAll(() => prismaClient.user.deleteMany());
+  beforeEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
+
+  afterEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
+
   it("should convert a user model to a user entity", async () => {
     const hasher = new BcryptAdapter(12);
     const created_at = new Date();
@@ -29,6 +36,7 @@ describe("User Model Mapper  unit test", () => {
         created_at: true,
       },
     });
+
     const entity = UserModelMapper.toEntity(model);
 
     expect(entity.toJSON()).toStrictEqual(

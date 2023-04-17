@@ -299,7 +299,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart:dev": "npm run build -w core",
+    "start:dev": "npm run build:w -w core & npm run start:dev -w nest",
+    "test": "jest --runInBand"
   },
   "keywords": [],
   "author": "",

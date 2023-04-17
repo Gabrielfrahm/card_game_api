@@ -2,3 +2,4 @@
 
 export * from "./config";
 export * from "./cryptography";
+export * from "./db";

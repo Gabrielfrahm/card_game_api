@@ -50,7 +50,7 @@
     "build": "tsc -b ./tsconfig.json",
     "build:w": "tsc -b ./tsconfig.json -w",
     "clean:tsc": "rm tsconfig.tsbuildinfo",
-    "test": "jest",
+    "test": "jest --runInBand",
     "test:cov": "npm run test -- --coverage",
     "cti": "cti",
     "cti:core": "sh ./cti.sh",

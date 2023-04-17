@@ -1,21 +1,22 @@
-import { UserModelMapper, UserPrismaRepository } from "#user/infra";
+import { UserPrismaRepository } from "#user/infra";
 import { PrismaClient } from "@prisma/client";
 
-import DeleteUserUseCase from "../../delete-user.usecase";
-import GetUserUseCase from "../../get-user.usecase";
-import { NotFoundError } from "#seedwork/domain";
 import ListUserUseCase from "../../list-user.usecase";
+import { prismaClient } from "#seedwork/infra";
 
 describe("list user use case integration test", () => {
-  let prismaClient = new PrismaClient();
   let repository: UserPrismaRepository;
   let useCase: ListUserUseCase.UseCase;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
     useCase = new ListUserUseCase.UseCase(repository);
+    await prismaClient.user.deleteMany({ where: {} });
   });
-  afterEach(() => prismaClient.user.deleteMany());
+
+  afterEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
 
   it("should return output sorted by created_at when input param is empty", async () => {
     await prismaClient.user.create({
@@ -128,6 +129,7 @@ describe("list user use case integration test", () => {
       filter: "a",
       column: "name",
     });
+
     expect(output).toStrictEqual({
       items: [models[0]].reverse(),
       total: 1,

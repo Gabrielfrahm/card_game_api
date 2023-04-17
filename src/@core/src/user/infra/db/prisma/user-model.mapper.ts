@@ -5,9 +5,9 @@ import { BcryptAdapter } from "#user/infra/cryptography";
 import { User } from "@prisma/client";
 
 export class UserModelMapper {
-  static toEntity(model: User) {
+  static toEntity(model: Omit<User, "updated_at">) {
     const hasher = new BcryptAdapter(12);
-    const { id, updated_at, ...rest } = model;
+    const { id, ...rest } = model;
     try {
       return new Entity(hasher, { ...rest }, new UniqueEntityId(id));
     } catch (e) {

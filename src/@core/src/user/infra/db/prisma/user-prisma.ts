@@ -18,14 +18,23 @@ export class UserPrismaRepository implements UserRepository.Repository {
         password: entity.password,
         created_at: entity.created_at,
       },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
+      },
     });
   }
 
   async findById(id: string | UniqueEntityId): Promise<User> {
     const _id = `${id}`;
     const model = await this._get(_id);
-
-    return UserModelMapper.toEntity(model);
+    if (model) {
+      return UserModelMapper.toEntity(model);
+    }
   }
 
   async findAll(): Promise<User[]> {
@@ -44,16 +53,26 @@ export class UserPrismaRepository implements UserRepository.Repository {
   }
 
   async update(entity: User): Promise<void> {
-    await this._get(entity.id);
-    await this.userModel.user.update({
-      where: { id: entity.id },
-      data: {
-        email: entity.email,
-        email_confirmation: entity.email_confirmation,
-        name: entity.name,
-        password: entity.password,
-      },
-    });
+    const user = await this._get(entity.id);
+    if (user) {
+      await this.userModel.user.update({
+        where: { id: entity.id },
+        data: {
+          email: entity.email,
+          email_confirmation: entity.email_confirmation,
+          name: entity.name,
+          password: entity.password,
+        },
+        select: {
+          id: true,
+          email: true,
+          email_confirmation: true,
+          name: true,
+          password: true,
+          created_at: true,
+        },
+      });
+    }
   }
 
   async delete(id: string | UniqueEntityId): Promise<void> {
@@ -79,6 +98,14 @@ export class UserPrismaRepository implements UserRepository.Repository {
       orderBy: {
         [props.sort ?? "created_at"]: props.sort_dir ?? "desc",
       },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
+      },
       take: take,
       skip: skip,
     });
@@ -99,6 +126,14 @@ export class UserPrismaRepository implements UserRepository.Repository {
     const user = await this.userModel.user.findFirst({
       where: {
         id: id,
+      },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
       },
     });
 

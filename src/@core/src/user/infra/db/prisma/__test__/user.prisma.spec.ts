@@ -1,17 +1,21 @@
-import { PrismaClient } from "@prisma/client";
 import { UserPrismaRepository } from "../user-prisma";
 import { BcryptAdapter } from "#user/infra/cryptography";
 import { User, UserRepository } from "#user/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
 import { UserModelMapper } from "../user-model.mapper";
+import { prismaClient } from "#seedwork/infra";
 
 describe("user prisma unit test", () => {
-  let prismaClient = new PrismaClient();
   let repository: UserPrismaRepository;
+
   beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
+    await prismaClient.user.deleteMany({ where: {} });
   });
-  afterEach(() => prismaClient.user.deleteMany());
+
+  afterEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
 
   it("Should be inserts a user", async () => {
     const hasher = new BcryptAdapter(12);
@@ -27,7 +31,7 @@ describe("user prisma unit test", () => {
         id: user.id,
       },
     });
-
+    console.log(model.id);
     expect(user.toJSON()).toStrictEqual({
       id: model.id,
       email: model.email,
@@ -319,6 +323,14 @@ describe("user prisma unit test", () => {
             password: users.password,
             email_confirmation: false,
           },
+          select: {
+            id: true,
+            email: true,
+            email_confirmation: true,
+            name: true,
+            password: true,
+            created_at: true,
+          },
         });
         arrayUser.push(user);
       }
@@ -432,6 +444,14 @@ describe("user prisma unit test", () => {
             password: users.password,
             email_confirmation: false,
           },
+          select: {
+            id: true,
+            email: true,
+            email_confirmation: true,
+            name: true,
+            password: true,
+            created_at: true,
+          },
         });
         arrayUser.push(user);
       }
@@ -523,6 +543,7 @@ describe("user prisma unit test", () => {
 
       for (const item of arrange) {
         let result = await repository.search(item.params);
+
         expect(JSON.stringify(result.toJSON(true))).toMatch(
           JSON.stringify(item.result.toJSON(true))
         );
@@ -589,6 +610,14 @@ describe("user prisma unit test", () => {
             name: users.name,
             password: users.password,
             email_confirmation: false,
+          },
+          select: {
+            id: true,
+            email: true,
+            email_confirmation: true,
+            name: true,
+            password: true,
+            created_at: true,
           },
         });
         arrayUser.push(user);

@@ -1,20 +1,23 @@
 import { UserPrismaRepository } from "#user/infra";
 import { PrismaClient } from "@prisma/client";
 
-import DeleteUserUseCase from "../../delete-user.usecase";
 import GetUserUseCase from "../../get-user.usecase";
 import { NotFoundError } from "#seedwork/domain";
+import { prismaClient } from "#seedwork/infra";
 
 describe("get user use case integration test", () => {
-  let prismaClient = new PrismaClient();
   let repository: UserPrismaRepository;
   let useCase: GetUserUseCase.UseCase;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
     useCase = new GetUserUseCase.UseCase(repository);
+    await prismaClient.user.deleteMany({ where: {} });
   });
-  afterEach(() => prismaClient.user.deleteMany());
+
+  afterEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
 
   it("should throws error when entity not found", async () => {
     await expect(useCase.execute({ id: "fake id" })).rejects.toThrow(
@@ -37,6 +40,14 @@ describe("get user use case integration test", () => {
     const response = await prismaClient.user.findUnique({
       where: {
         id: model.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
       },
     });
     expect(output).toStrictEqual({

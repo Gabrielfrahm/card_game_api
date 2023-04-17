@@ -1,18 +1,21 @@
+import { prismaClient } from "#seedwork/infra";
 import { UserPrismaRepository } from "#user/infra";
-import { PrismaClient } from "@prisma/client";
-import CreateUserUseCase from "../../create-user.usecase";
+
 import DeleteUserUseCase from "../../delete-user.usecase";
 
 describe("delete user use case integration test", () => {
-  let prismaClient = new PrismaClient();
   let repository: UserPrismaRepository;
   let useCase: DeleteUserUseCase.UseCase;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
     useCase = new DeleteUserUseCase.UseCase(repository);
+    await prismaClient.user.deleteMany({ where: {} });
   });
-  afterEach(() => prismaClient.user.deleteMany());
+
+  afterEach(async () => {
+    await prismaClient.user.deleteMany({ where: {} });
+  });
 
   it("should get a user", async () => {
     const model = await prismaClient.user.create({
