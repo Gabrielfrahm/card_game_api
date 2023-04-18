@@ -1,5 +1,5 @@
 import { Hasher } from "#seedwork/infra/cryptography";
-import bcrypt from "bcrypt";
+import { hashSync } from "bcrypt";
 
 export class BcryptAdapter implements Hasher {
   private readonly salt: number;
@@ -9,7 +9,7 @@ export class BcryptAdapter implements Hasher {
   }
 
   async hash(value: string): Promise<string> {
-    const hashed = await bcrypt.hash(value, this.salt);
+    const hashed = hashSync(value, this.salt);
     return await Promise.resolve(hashed);
   }
 }

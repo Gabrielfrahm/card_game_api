@@ -9,6 +9,16 @@ export class UserPrismaRepository implements UserRepository.Repository {
   constructor(private userModel: PrismaClient) {}
 
   async insert(entity: User): Promise<void> {
+    const userExits = await this.userModel.user.findUnique({
+      where: {
+        email: entity.email,
+      },
+    });
+
+    if (userExits) {
+      throw new Error("user already existing");
+    }
+
     await this.userModel.user.create({
       data: {
         id: entity.id,

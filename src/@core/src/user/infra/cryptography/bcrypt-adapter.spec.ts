@@ -11,6 +11,7 @@ describe("bcrypt adapter unit test", () => {
   it("Should return a hash on success", async () => {
     const hasher = new BcryptAdapter(12);
     const hash = await hasher.hash("any_value");
+
     expect(hash).not.toBe("any_value");
   });
 
