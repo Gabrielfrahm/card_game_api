@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { CreateUserUseCase, GetUserUseCase } from 'core/user/application';
+import {
+  CreateUserUseCase,
+  DeleteUserUseCase,
+  GetUserUseCase,
+  ListUserUseCase,
+  UpdateUserUseCase,
+} from 'core/user/application';
 
 import { UserInMemoryRepository, UserPrismaRepository } from 'core/user/infra';
 import { prismaClient } from 'core/@seedwork/infra';
@@ -32,10 +38,31 @@ export namespace USER_PROVIDERS {
       },
       inject: [REPOSITORIES.USER_REPOSITORY.provide],
     };
+    export const UPDATE_USER_USE_CASE = {
+      provide: UpdateUserUseCase.UseCase,
+      useFactory: (userRepo: UserPrismaRepository) => {
+        return new UpdateUserUseCase.UseCase(userRepo);
+      },
+      inject: [REPOSITORIES.USER_REPOSITORY.provide],
+    };
+    export const LIST_USER_USE_CASE = {
+      provide: ListUserUseCase.UseCase,
+      useFactory: (userRepo: UserPrismaRepository) => {
+        return new ListUserUseCase.UseCase(userRepo);
+      },
+      inject: [REPOSITORIES.USER_REPOSITORY.provide],
+    };
     export const GET_USER_USE_CASE = {
       provide: GetUserUseCase.UseCase,
       useFactory: (userRepo: UserPrismaRepository) => {
         return new GetUserUseCase.UseCase(userRepo);
+      },
+      inject: [REPOSITORIES.USER_REPOSITORY.provide],
+    };
+    export const DELETE_USER_USE_CASE = {
+      provide: DeleteUserUseCase.UseCase,
+      useFactory: (userRepo: UserPrismaRepository) => {
+        return new DeleteUserUseCase.UseCase(userRepo);
       },
       inject: [REPOSITORIES.USER_REPOSITORY.provide],
     };

@@ -13,15 +13,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
   constructor(private userModel: PrismaClient) {}
 
   async insert(entity: User): Promise<void> {
-    const userExits = await this.userModel.user.findUnique({
-      where: {
-        email: entity.email,
-      },
-    });
-
-    if (userExits) {
-      throw new AlreadyExisting(`Email already existing`);
-    }
+    await this._checkEmail(entity.email);
 
     await this.userModel.user.create({
       data: {
@@ -67,26 +59,26 @@ export class UserPrismaRepository implements UserRepository.Repository {
   }
 
   async update(entity: User): Promise<void> {
-    const user = await this._get(entity.id);
-    if (user) {
-      await this.userModel.user.update({
-        where: { id: entity.id },
-        data: {
-          email: entity.email,
-          email_confirmation: entity.email_confirmation,
-          name: entity.name,
-          password: entity.password,
-        },
-        select: {
-          id: true,
-          email: true,
-          email_confirmation: true,
-          name: true,
-          password: true,
-          created_at: true,
-        },
-      });
-    }
+    await this._checkEmail(entity.email);
+    await this._get(entity.id);
+
+    await this.userModel.user.update({
+      where: { id: entity.id },
+      data: {
+        email: entity.email,
+        email_confirmation: entity.email_confirmation,
+        name: entity.name,
+        password: entity.password,
+      },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
+      },
+    });
   }
 
   async delete(id: string | UniqueEntityId): Promise<void> {
@@ -155,5 +147,17 @@ export class UserPrismaRepository implements UserRepository.Repository {
       throw new NotFoundError(`Entity Not Found Using ID ${id}`);
     }
     return user;
+  }
+
+  private async _checkEmail(email: string) {
+    const userExits = await this.userModel.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (userExits) {
+      throw new AlreadyExisting(`Email already existing`);
+    }
   }
 }
