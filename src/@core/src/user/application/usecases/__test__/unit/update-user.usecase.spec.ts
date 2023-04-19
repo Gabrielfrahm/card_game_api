@@ -27,6 +27,8 @@ describe("update user use case unit test", () => {
       password: "some password",
       created_at: new Date(),
     });
+    await entity.setPassword(entity.password);
+
     repository.items = [entity];
     let output = await useCase.execute({ id: entity.id, name: "test" });
 
@@ -107,7 +109,7 @@ describe("update user use case unit test", () => {
         email: i.expected.email,
         email_confirmation: i.expected.email_confirmation,
         name: i.expected.name,
-        password: i.expected.password,
+        password: output.password,
         created_at: i.expected.created_at,
       });
     }

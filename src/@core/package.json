@@ -55,6 +55,7 @@
     "cti": "cti",
     "cti:core": "sh ./cti.sh",
     "prisma:combine": "node ./src/@seedwork/infra/db/prisma/combine.ts",
+    "prisma:test": "dotenv -e .env.test -- npx prisma migrate deploy --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=./src/@seedwork/infra/db/prisma/schema.prisma"
   },

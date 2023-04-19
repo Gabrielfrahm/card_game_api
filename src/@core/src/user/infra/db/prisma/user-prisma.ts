@@ -1,4 +1,8 @@
-import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
+import {
+  AlreadyExisting,
+  NotFoundError,
+  UniqueEntityId,
+} from "#seedwork/domain";
 import { User, UserRepository } from "#user/domain";
 import { PrismaClient } from "@prisma/client";
 import { UserModelMapper } from "./user-model.mapper";
@@ -16,7 +20,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
     });
 
     if (userExits) {
-      throw new Error("user already existing");
+      throw new AlreadyExisting(`Email already existing`);
     }
 
     await this.userModel.user.create({
