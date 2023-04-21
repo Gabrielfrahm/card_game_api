@@ -9,3 +9,7 @@ services:
       - .:/home/node/app
     ports:
       - 3333:3333
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

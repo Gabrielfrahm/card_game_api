@@ -59,7 +59,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
   }
 
   async update(entity: User): Promise<void> {
-    await this._checkEmail(entity.email);
+    await this._checkEmail(entity.email, entity.id);
     await this._get(entity.id);
 
     await this.userModel.user.update({
@@ -149,15 +149,27 @@ export class UserPrismaRepository implements UserRepository.Repository {
     return user;
   }
 
-  private async _checkEmail(email: string) {
-    const userExits = await this.userModel.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
+  private async _checkEmail(email: string, id?: string) {
+    if (id) {
+      const userExitsWithId = await this.userModel.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
 
-    if (userExits) {
-      throw new AlreadyExisting(`Email already existing`);
+      if (userExitsWithId && userExitsWithId.id !== id) {
+        throw new AlreadyExisting(`Email already existing`);
+      }
+    } else {
+      const userExits = await this.userModel.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      if (userExits) {
+        throw new AlreadyExisting(`Email already existing`);
+      }
     }
   }
 }
