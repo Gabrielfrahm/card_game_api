@@ -23,7 +23,7 @@ import { UserPresenter } from './presenter/user.presenter';
 import { SearchUserDto } from './dtos/search-user.dto';
 import { UserCollectionPresenter } from './presenter/user.presenter';
 import { UpdateUserDto } from './dtos/update-user';
-import { RedisCacheInterceptor } from 'src/@share/Interceptors/redis-cache.interceptor';
+import { RedisCacheInterceptor } from './Interceptors/redis-cache.interceptor';
 
 @Controller('users')
 @UseInterceptors(RedisCacheInterceptor)
@@ -53,7 +53,6 @@ export class UsersController {
   @HttpCode(204)
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
     return await this.updateUserUseCase.execute({
       id,
       ...updateUserDto,

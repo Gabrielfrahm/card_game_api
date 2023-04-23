@@ -1,10 +1,13 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { USER_PROVIDERS } from './user.providers';
-import { RedisCacheMiddleware } from '../@share/middlewares/redis.middleware';
-import { RedisCacheInterceptor } from '../@share/Interceptors/redis-cache.interceptor';
+
+import { RedisCacheInterceptor } from './Interceptors/redis-cache.interceptor';
+import { RedisCacheMiddleware } from './middlewares/redis.middleware';
+import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
+  imports: [RedisModule],
   controllers: [UsersController],
   providers: [
     ...Object.values(USER_PROVIDERS.USE_CASES),
