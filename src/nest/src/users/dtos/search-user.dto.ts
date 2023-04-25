@@ -1,6 +1,7 @@
 import { ListUserUseCase } from 'core/user/application';
-import { SortDirection } from 'core/dist/@seedwork/domain/repositories/repository-contracts';
+
 import { IsOptional } from 'class-validator';
+import { SortDirection } from 'core/@seedwork/domain';
 
 export class SearchUserDto implements ListUserUseCase.Input {
   @IsOptional()

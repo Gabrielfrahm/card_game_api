@@ -63,7 +63,11 @@ export class UsersController {
   @HttpCode(200)
   async search(@Query() searchUserDto: SearchUserDto) {
     const output = await this.listUserUseCase.execute(searchUserDto);
-    return new UserCollectionPresenter(output);
+    const { data, meta } = new UserCollectionPresenter(output);
+    return {
+      data,
+      meta,
+    };
   }
 
   @Get(':id')
