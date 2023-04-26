@@ -17,6 +17,7 @@ export namespace CreateAuthUseCase {
     ) {}
     async execute(input: Input): Promise<AuthOutput> {
       const user = await this.userRepository.findByEmail(input.email);
+
       const passwordMatched = await this.compareHash.compare(
         input.password,
         user.password

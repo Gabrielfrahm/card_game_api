@@ -3,7 +3,7 @@
 import { UserInMemoryRepository, UserPrismaRepository } from 'core/user/infra';
 import { prismaClient, BcryptAdapter } from 'core/@seedwork/infra';
 import { CreateAuthUseCase } from 'core/auth/application';
-import { JWTAdapter } from 'core/auth/infra';
+import { AuthPrismaRepository, JWTAdapter } from 'core/auth/infra';
 
 export namespace AUTH_PROVIDERS {
   export namespace REPOSITORIES {
@@ -18,9 +18,21 @@ export namespace AUTH_PROVIDERS {
       },
     };
 
+    export const AUTH_PRISMA_REPOSITORY = {
+      provide: 'AuthPrismaRepository',
+      useFactory: () => {
+        return new AuthPrismaRepository(prismaClient);
+      },
+    };
+
     export const USER_REPOSITORY = {
       provide: 'UserRepository',
       useExisting: 'UserPrismaRepository',
+    };
+
+    export const AUTH_REPOSITORY = {
+      provide: 'AuthRepository',
+      useExisting: 'AuthPrismaRepository',
     };
   }
 
@@ -47,13 +59,20 @@ export namespace AUTH_PROVIDERS {
       provide: CreateAuthUseCase.UseCase,
       useFactory: (
         userRepo: UserPrismaRepository,
+        authRepo: AuthPrismaRepository,
         compareHasher: BcryptAdapter.CompareAdapter,
         jwt: JWTAdapter,
       ) => {
-        return new CreateAuthUseCase.UseCase(userRepo, compareHasher, jwt);
+        return new CreateAuthUseCase.UseCase(
+          userRepo,
+          authRepo,
+          compareHasher,
+          jwt,
+        );
       },
       inject: [
         REPOSITORIES.USER_REPOSITORY.provide,
+        REPOSITORIES.AUTH_REPOSITORY.provide,
         HASH.COMPARE_ADAPTER.provide,
         JWT.JWT_ADAPTER.provide,
       ],
