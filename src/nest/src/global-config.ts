@@ -3,6 +3,7 @@ import { EntityValidationErrorFilter } from './@share/exception-filters/entity-v
 import { AlreadyExistingValidationFilter } from './@share/exception-filters/already-existing-validation/already-existing-validation.filter';
 import { NotFoundValidationErrorFilter } from './@share/exception-filters/not-found-validation-error/not-found-validation-error.filter';
 import { CredentialValidationErrorFilter } from './@share/exception-filters/credential-validation-error/credential-validation-error.filter';
+import { JWTValidationErrorFilter } from './@share/exception-filters/jwt-validation-error/jwt-validation-error.filter';
 
 export function applyGlobalConfig(app: INestApplication) {
   app.useGlobalPipes(
@@ -16,5 +17,6 @@ export function applyGlobalConfig(app: INestApplication) {
     new AlreadyExistingValidationFilter(),
     new NotFoundValidationErrorFilter(),
     new CredentialValidationErrorFilter(),
+    new JWTValidationErrorFilter(),
   );
 }

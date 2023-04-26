@@ -1,4 +1,5 @@
 import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
+import { JWTError } from 'core/@seedwork/domain';
 import { JWTAdapter } from 'core/auth/infra';
 import { Request, Response, NextFunction } from 'express';
 
@@ -13,7 +14,7 @@ export class AuthenticatedMiddleware implements NestMiddleware {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      throw new Error('JWT token is Missing');
+      throw new JWTError('JWT token is Missing');
     }
 
     const [, token] = authHeader.split(' ');
