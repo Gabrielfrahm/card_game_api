@@ -18,6 +18,7 @@ export default {
     '/core/(.*)$/': `${core_path}/$1`,
     '#seedwork/(.*)$': `${core_path}/@seedwork/$1`,
     '#user/(.*)$': `${core_path}/user/$1`,
+    '#auth/(.*)$': `${core_path}/auth/$1`,
   },
   coverageThreshold: {
     global: {

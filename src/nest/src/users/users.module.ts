@@ -1,10 +1,14 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { USER_PROVIDERS } from './user.providers';
 
 import { RedisCacheInterceptor } from './Interceptors/redis-cache.interceptor';
 import { RedisCacheMiddleware } from './middlewares/redis.middleware';
 import { RedisModule } from 'src/redis/redis.module';
+
+import { AuthenticatedMiddleware } from 'src/@share/middlewares/auth/authenticated.middleware';
+import { AUTH_PROVIDERS } from 'src/authenticate/authenticate.providers';
+import { JWTAdapter } from 'core/auth/infra';
 
 @Module({
   imports: [RedisModule],
@@ -15,10 +19,22 @@ import { RedisModule } from 'src/redis/redis.module';
     ...Object.values(USER_PROVIDERS.HASH),
     RedisCacheMiddleware,
     RedisCacheInterceptor,
+    {
+      provide: 'JWT',
+      useFactory: () => {
+        return new JWTAdapter(process.env.JWT_SECRET);
+      },
+    },
+    AuthenticatedMiddleware,
   ],
 })
 export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RedisCacheMiddleware).forRoutes(UsersController);
+    consumer
+      .apply(AuthenticatedMiddleware)
+      .exclude({ path: 'users', method: RequestMethod.POST }, 'users/(.*)')
+      .forRoutes(UsersController)
+      .apply(RedisCacheMiddleware)
+      .forRoutes(UsersController);
   }
 }
