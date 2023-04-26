@@ -7,7 +7,6 @@ import { RedisCacheMiddleware } from './middlewares/redis.middleware';
 import { RedisModule } from 'src/redis/redis.module';
 
 import { AuthenticatedMiddleware } from 'src/@share/middlewares/auth/authenticated.middleware';
-import { AUTH_PROVIDERS } from 'src/authenticate/authenticate.providers';
 import { JWTAdapter } from 'core/auth/infra';
 
 @Module({
@@ -32,7 +31,7 @@ export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticatedMiddleware)
-      .exclude({ path: 'users', method: RequestMethod.POST }, 'users/(.*)')
+      .exclude({ path: 'users', method: RequestMethod.POST })
       .forRoutes(UsersController)
       .apply(RedisCacheMiddleware)
       .forRoutes(UsersController);

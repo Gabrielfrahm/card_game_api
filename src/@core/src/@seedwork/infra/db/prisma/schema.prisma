@@ -16,5 +16,18 @@ model User {
   created_at         DateTime @default(now())
   updated_at         DateTime @default(now())
 
+  auths Auth?
+
   @@map("users")
+}
+
+model Auth {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  user_id    String   @unique
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("auths")
 }
