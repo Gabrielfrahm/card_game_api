@@ -43,6 +43,13 @@ export class UserPrismaRepository implements UserRepository.Repository {
     }
   }
 
+  async findByEmail(email: string): Promise<User> {
+    const model = await this._getByEmail(email);
+    if (model) {
+      return UserModelMapper.toEntity(model);
+    }
+  }
+
   async findAll(): Promise<User[]> {
     const models = await this.userModel.user.findMany({
       select: {
@@ -145,6 +152,27 @@ export class UserPrismaRepository implements UserRepository.Repository {
 
     if (!user) {
       throw new NotFoundError(`Entity Not Found Using ID ${id}`);
+    }
+    return user;
+  }
+
+  private async _getByEmail(email: string) {
+    const user = await this.userModel.user.findFirst({
+      where: {
+        email: email,
+      },
+      select: {
+        id: true,
+        email: true,
+        email_confirmation: true,
+        name: true,
+        password: true,
+        created_at: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError(`Entity Not Found Using EMAIL ${email}`);
     }
     return user;
   }

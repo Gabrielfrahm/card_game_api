@@ -12,6 +12,7 @@ import { RedisModule } from 'src/redis/redis.module';
   providers: [
     ...Object.values(USER_PROVIDERS.USE_CASES),
     ...Object.values(USER_PROVIDERS.REPOSITORIES),
+    ...Object.values(USER_PROVIDERS.HASH),
     RedisCacheMiddleware,
     RedisCacheInterceptor,
   ],

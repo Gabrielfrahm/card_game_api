@@ -1,6 +1,7 @@
 import { UniqueEntityId } from "#seedwork/domain";
+import { BcryptAdapter } from "#seedwork/infra";
 import { User, UserRepository } from "#user/domain";
-import { BcryptAdapter, UserInMemoryRepository } from "#user/infra";
+import { UserInMemoryRepository } from "#user/infra";
 import ListUserUseCase from "../../list-user.usecase";
 
 describe("list users use case unit test", () => {
@@ -32,7 +33,7 @@ describe("list users use case unit test", () => {
       last_page: 1,
     });
 
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
     const entity = new User(hasher, {
       email: "some@email.com",
       name: "some name",
@@ -60,7 +61,7 @@ describe("list users use case unit test", () => {
   });
 
   it("should return output sorted by created_at when input param is empty", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
 
     const items = [
       new User(
@@ -98,7 +99,7 @@ describe("list users use case unit test", () => {
   });
 
   it("should return output using pagination, sort and filter", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
     const items = [
       new User(hasher, {
         email: "some@email.com",

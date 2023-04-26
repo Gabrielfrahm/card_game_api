@@ -6,3 +6,4 @@ export * from "./not-found.error";
 export * from "./validator.error";
 export * from "./already-existing.error";
 export * from "./jwt.error";
+export * from "./credential.error";

@@ -24,6 +24,10 @@ export abstract class InMemoryRepository<E extends Entity>
     return this._get(_id);
   }
 
+  async findByEmail(email: string): Promise<E> {
+    return this._getEmail(email);
+  }
+
   async findAll(): Promise<E[]> {
     return this.items;
   }
@@ -45,6 +49,13 @@ export abstract class InMemoryRepository<E extends Entity>
     const item = this.items.find((item) => item.id === id);
     if (!item) {
       throw new NotFoundError(`Entity Not Found Using ID ${id}`);
+    }
+    return item;
+  }
+  protected async _getEmail(email: string): Promise<E> {
+    const item = this.items.find((item) => item["email"] === email);
+    if (!item) {
+      throw new NotFoundError(`Entity Not Found Using EMAIL ${email}`);
     }
     return item;
   }

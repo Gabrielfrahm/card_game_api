@@ -1,9 +1,9 @@
 import { UserPrismaRepository } from "../user-prisma";
-import { BcryptAdapter } from "#user/infra/cryptography";
+
 import { User, UserRepository } from "#user/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
 import { UserModelMapper } from "../user-model.mapper";
-import { prismaClient } from "#seedwork/infra";
+import { BcryptAdapter, prismaClient } from "#seedwork/infra";
 
 describe("user prisma unit test", () => {
   let repository: UserPrismaRepository;
@@ -18,7 +18,7 @@ describe("user prisma unit test", () => {
   });
 
   it("Should be inserts a user", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
     let user = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -53,7 +53,8 @@ describe("user prisma unit test", () => {
   });
 
   it("should finds a entity by id", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
     let user = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -68,8 +69,24 @@ describe("user prisma unit test", () => {
     expect(user.toJSON()).toStrictEqual(entityFound.toJSON());
   });
 
-  it("should return all  categories", async () => {
-    const hasher = new BcryptAdapter(12);
+  it("should finds a entity by email", async () => {
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
+    let user = new User(hasher, {
+      email: "test@mail.com",
+      name: "some name",
+      password: "some password",
+    });
+    await repository.insert(user);
+
+    let entityFound = await repository.findByEmail(user.email);
+
+    expect(user.toJSON()).toStrictEqual(entityFound.toJSON());
+  });
+
+  it("should return all  users", async () => {
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
     let user = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -82,7 +99,8 @@ describe("user prisma unit test", () => {
   });
 
   it("should return on error when a entity not found", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
     let entity = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -94,7 +112,8 @@ describe("user prisma unit test", () => {
   });
 
   it("should update entity", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
     let entity = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -125,7 +144,8 @@ describe("user prisma unit test", () => {
   });
 
   it("should delete an entity", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
+
     let entity = new User(hasher, {
       email: "test@mail.com",
       name: "some name",
@@ -144,7 +164,8 @@ describe("user prisma unit test", () => {
   describe("search method test", () => {
     it("should only apply paginate when other params are null ", async () => {
       const created_at = new Date();
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       let entity = new User(hasher, {
         email: "test@mail.com",
         name: "some name",
@@ -208,7 +229,8 @@ describe("user prisma unit test", () => {
 
     it("should order by created_at DESC when search params are null", async () => {
       const created_at = new Date();
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       const arrange = [
         new User(hasher, {
           email: "test@mail.com",

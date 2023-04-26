@@ -1,13 +1,15 @@
+import { BcryptAdapter } from "#seedwork/infra";
 import { UserInMemoryRepository } from "#user/infra";
 import CreateUserUseCase from "../../create-user.usecase";
 
 describe("create user use case unit test", () => {
   let repository: UserInMemoryRepository;
   let useCase: CreateUserUseCase.UseCase;
+  let hasher = new BcryptAdapter.HasherAdapter(12);
 
   beforeEach(() => {
     repository = new UserInMemoryRepository();
-    useCase = new CreateUserUseCase.UseCase(repository);
+    useCase = new CreateUserUseCase.UseCase(repository, hasher);
   });
 
   it("should create a user", async () => {

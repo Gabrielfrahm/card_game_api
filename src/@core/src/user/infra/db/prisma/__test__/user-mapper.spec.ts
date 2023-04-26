@@ -2,8 +2,8 @@ import { UniqueEntityId } from "#seedwork/domain";
 import { PrismaClient } from "@prisma/client";
 import { UserModelMapper } from "../user-model.mapper";
 import { User } from "#user/domain";
-import { BcryptAdapter } from "#user/infra/cryptography";
-import { prismaClient } from "#seedwork/infra";
+
+import { BcryptAdapter, prismaClient } from "#seedwork/infra";
 
 describe("User Model Mapper  unit test", () => {
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe("User Model Mapper  unit test", () => {
   });
 
   it("should convert a user model to a user entity", async () => {
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
     const created_at = new Date();
     const user = {
       email: "test@test.com",

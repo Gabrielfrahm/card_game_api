@@ -1,5 +1,6 @@
+import { BcryptAdapter } from "#seedwork/infra";
 import { User } from "#user/domain";
-import { BcryptAdapter } from "#user/infra/cryptography";
+
 import UserInMemoryRepository from "./user-in-memory.repository";
 
 describe("user in memory repository unit test", () => {
@@ -8,7 +9,7 @@ describe("user in memory repository unit test", () => {
 
   describe("apply filter method", () => {
     it("should no filter items when filter params is null", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
       const items = [
         new User(hasher, {
           email: "some@email.com",
@@ -41,7 +42,8 @@ describe("user in memory repository unit test", () => {
     });
 
     it("should filter items", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       const items = [
         new User(hasher, {
           email: "some@email.com",
@@ -83,7 +85,8 @@ describe("user in memory repository unit test", () => {
 
   describe("apply method sort", () => {
     it("should sort by created_at when sort params is null", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       const items = [
         new User(hasher, {
           email: "some@email.com",
@@ -134,7 +137,8 @@ describe("user in memory repository unit test", () => {
     });
 
     it("should sort items by name", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       const items = [
         new User(hasher, {
           email: "some@email.com",

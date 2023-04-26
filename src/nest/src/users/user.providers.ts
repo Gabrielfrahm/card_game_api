@@ -9,7 +9,7 @@ import {
 } from 'core/user/application';
 
 import { UserInMemoryRepository, UserPrismaRepository } from 'core/user/infra';
-import { prismaClient } from 'core/@seedwork/infra';
+import { prismaClient, BcryptAdapter } from 'core/@seedwork/infra';
 
 export namespace USER_PROVIDERS {
   export namespace REPOSITORIES {
@@ -30,13 +30,28 @@ export namespace USER_PROVIDERS {
     };
   }
 
+  export namespace HASH {
+    export const BCRYPT_ADAPTER = {
+      provide: 'bcryptAdapter',
+      useFactory: () => {
+        return new BcryptAdapter.HasherAdapter(12);
+      },
+    };
+  }
+
   export namespace USE_CASES {
     export const CREATE_USER_USE_CASE = {
       provide: CreateUserUseCase.UseCase,
-      useFactory: (userRepo: UserPrismaRepository) => {
-        return new CreateUserUseCase.UseCase(userRepo);
+      useFactory: (
+        userRepo: UserPrismaRepository,
+        hasher: BcryptAdapter.HasherAdapter,
+      ) => {
+        return new CreateUserUseCase.UseCase(userRepo, hasher);
       },
-      inject: [REPOSITORIES.USER_REPOSITORY.provide],
+      inject: [
+        REPOSITORIES.USER_REPOSITORY.provide,
+        HASH.BCRYPT_ADAPTER.provide,
+      ],
     };
     export const UPDATE_USER_USE_CASE = {
       provide: UpdateUserUseCase.UseCase,

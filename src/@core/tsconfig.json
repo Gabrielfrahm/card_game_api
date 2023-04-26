@@ -8,6 +8,9 @@
       ],
       "#user/*": [
         "./user/*"
+      ],
+      "#auth/*": [
+        "./auth/*"
       ]
     },
     "outDir": "./dist",

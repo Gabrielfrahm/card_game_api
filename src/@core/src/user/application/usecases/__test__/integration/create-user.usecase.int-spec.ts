@@ -1,14 +1,15 @@
-import { prismaClient } from "#seedwork/infra";
+import { BcryptAdapter, prismaClient } from "#seedwork/infra";
 import { UserPrismaRepository } from "#user/infra";
 import CreateUserUseCase from "../../create-user.usecase";
 
 describe("create user use case integration test", () => {
   let repository: UserPrismaRepository;
   let useCase: CreateUserUseCase.UseCase;
+  let hasher = new BcryptAdapter.HasherAdapter(12);
 
   beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
-    useCase = new CreateUserUseCase.UseCase(repository);
+    useCase = new CreateUserUseCase.UseCase(repository, hasher);
     await prismaClient.user.deleteMany({ where: {} });
   });
 

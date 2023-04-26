@@ -1,10 +1,10 @@
-import { BcryptAdapter } from "../../../infra/cryptography/bcrypt-adapter";
+import { BcryptAdapter } from "#seedwork/infra";
 import { User } from "../user";
 
 describe("User Integration test", () => {
   describe("created method", () => {
     it("should a invalid user using email property", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
       expect(
         () =>
           new User(hasher, {
@@ -47,7 +47,8 @@ describe("User Integration test", () => {
     });
 
     it("should a invalid user using email_confirmation property", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       expect(
         () =>
           new User(hasher, {
@@ -92,7 +93,8 @@ describe("User Integration test", () => {
     });
 
     it("should a invalid user using password property", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       expect(
         () =>
           new User(hasher, {
@@ -131,7 +133,8 @@ describe("User Integration test", () => {
     });
 
     it("should a invalid user using name property", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       expect(
         () =>
           new User(hasher, {
@@ -189,7 +192,8 @@ describe("User Integration test", () => {
     });
 
     it("should a valid user", async () => {
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
+
       new User(hasher, {
         email: "test@teste.com",
         name: "some name",
@@ -232,7 +236,7 @@ describe("User Integration test", () => {
 
     it("should a valid user update", () => {
       expect.assertions(0);
-      const hasher = new BcryptAdapter(12);
+      const hasher = new BcryptAdapter.HasherAdapter(12);
 
       const user = new User(hasher, {
         email: "test@teste.com",

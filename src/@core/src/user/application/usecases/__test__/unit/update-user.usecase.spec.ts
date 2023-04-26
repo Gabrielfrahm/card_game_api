@@ -1,6 +1,7 @@
 import { NotFoundError } from "#seedwork/domain";
+import { BcryptAdapter } from "#seedwork/infra";
 import { User } from "#user/domain";
-import { BcryptAdapter, UserInMemoryRepository } from "#user/infra";
+import { UserInMemoryRepository } from "#user/infra";
 import UpdateUserUseCase from "../../update-user.usecase";
 
 describe("update user use case unit test", () => {
@@ -20,7 +21,7 @@ describe("update user use case unit test", () => {
 
   it("should update a user", async () => {
     const spyRepository = jest.spyOn(repository, "update");
-    const hasher = new BcryptAdapter(12);
+    const hasher = new BcryptAdapter.HasherAdapter(12);
     const entity = new User(hasher, {
       email: "some@email.com",
       name: "some name",
