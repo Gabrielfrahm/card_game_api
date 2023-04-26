@@ -14,7 +14,11 @@
     "#user/*": "./dist/user/*.js",
     "#auth/application": "./dist/auth/application/index.js",
     "#auth/infra": "./dist/auth/infra/index.js",
-    "#auth/*": "./dist/auth/*.js"
+    "#auth/*": "./dist/auth/*.js",
+    "#card/domain": "./dist/card/domain/index.js",
+    "#card/application": "./dist/card/application/index.js",
+    "#card/infra": "./dist/card/infra/index.js",
+    "#card/*": "./dist/card/*.js"
   },
   "exports": {
     "./@seedwork/application": "./dist/@seedwork/application/index.js",
@@ -24,7 +28,10 @@
     "./user/domain": "./dist/user/domain/index.js",
     "./user/infra": "./dist/user/infra/index.js",
     "./auth/application": "./dist/auth/application/index.js",
-    "./auth/infra": "./dist/auth/infra/index.js"
+    "./auth/infra": "./dist/auth/infra/index.js",
+    "./card/application": "./dist/card/application/index.js",
+    "./card/domain": "./dist/card/domain/index.js",
+    "./card/infra": "./dist/card/infra/index.js"
   },
   "typesVersions": {
     ">=4.0": {
@@ -51,6 +58,15 @@
       ],
       "auth/infra": [
         "./dist/auth/infra/index.d.ts"
+      ],
+      "card/application": [
+        "./dist/card/application/index.d.ts"
+      ],
+      "card/domain": [
+        "./dist/card/domain/index.d.ts"
+      ],
+      "card/infra": [
+        "./dist/card/infra/index.d.ts"
       ]
     }
   },
