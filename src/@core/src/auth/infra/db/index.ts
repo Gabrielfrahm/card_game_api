@@ -1,1 +1,3 @@
-export * from "./prisma";
+// created from 'create-ts-index'
+
+export * from './prisma';

@@ -5,10 +5,13 @@ import { UserRepository } from "#user/domain";
 
 import { JWTAdapter } from "auth/infra";
 import { AuthOutput } from "../dtos";
+import { PrismaClient } from "@prisma/client";
+import { AuthPrismaRepository } from "#auth/infra/db";
 export namespace CreateAuthUseCase {
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(
       private userRepository: UserRepository.Repository,
+      private authRepository: AuthPrismaRepository,
       private compareHash: BcryptAdapter.CompareAdapter,
       private JwtAdapter: JWTAdapter
     ) {}
@@ -30,6 +33,11 @@ export namespace CreateAuthUseCase {
         },
         { expiresIn: process.env.JWT_EXPIRED }
       );
+
+      await this.authRepository.insert({
+        user_id: user.id,
+        token,
+      });
 
       return {
         user: {

@@ -2,7 +2,7 @@ import { NotFoundError } from "#seedwork/domain";
 import { Auth, PrismaClient } from "@prisma/client";
 
 export type AuthEntityPrisma = {
-  id: string;
+  id?: string;
   token: string;
   user_id: string;
 };

@@ -1,4 +1,5 @@
 import { JWTAdapter } from "#auth/infra";
+import { AuthPrismaRepository } from "#auth/infra";
 import { BcryptAdapter, prismaClient } from "#seedwork/infra";
 import { User } from "#user/domain";
 
@@ -8,21 +9,28 @@ import { CreateAuthUseCase } from "../../create-auth.usecase";
 
 describe("auth user use case integration test", () => {
   let repository: UserPrismaRepository;
+  let authRepository: AuthPrismaRepository;
   let useCase: CreateAuthUseCase.UseCase;
   let hasherCompare = new BcryptAdapter.CompareAdapter();
   let jwtAdapter = new JWTAdapter(process.env.JWT_SECRET);
 
   beforeEach(async () => {
     repository = new UserPrismaRepository(prismaClient);
+    authRepository = new AuthPrismaRepository(prismaClient);
     useCase = new CreateAuthUseCase.UseCase(
       repository,
+      authRepository,
       hasherCompare,
       jwtAdapter
     );
+
+    await prismaClient.auth.deleteMany({ where: {} });
     await prismaClient.user.deleteMany({ where: {} });
   });
 
   afterEach(async () => {
+    await prismaClient.auth.deleteMany({ where: {} });
+
     await prismaClient.user.deleteMany({ where: {} });
   });
 
