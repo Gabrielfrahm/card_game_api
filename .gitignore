@@ -4,3 +4,4 @@ tsconfig.tsbuildinfo
 __coverage
 dist
 .env.testing
+*.env

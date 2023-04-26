@@ -1,1 +1,3 @@
-export * from "./authentication.interface";
+// created from 'create-ts-index'
+
+export * from './authentication.interface';

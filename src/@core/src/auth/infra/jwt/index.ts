@@ -1,1 +1,3 @@
-export * from "./jwt.adapter";
+// created from 'create-ts-index'
+
+export * from './jwt.adapter';

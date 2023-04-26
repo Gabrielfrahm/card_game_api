@@ -4,7 +4,7 @@ import { JWTAdapter } from "../../../../infra";
 import { CreateAuthUseCase } from "../../create-auth.usecase";
 import { User } from "#user/domain";
 
-describe("create user use case unit test", () => {
+describe("auth user use case unit test", () => {
   let repository: UserInMemoryRepository;
   let useCase: CreateAuthUseCase.UseCase;
   let compareHasher = new BcryptAdapter.CompareAdapter();

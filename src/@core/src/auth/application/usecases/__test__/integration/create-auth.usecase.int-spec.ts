@@ -6,7 +6,7 @@ import { UserPrismaRepository } from "#user/infra";
 
 import { CreateAuthUseCase } from "../../create-auth.usecase";
 
-describe("create user use case integration test", () => {
+describe("auth user use case integration test", () => {
   let repository: UserPrismaRepository;
   let useCase: CreateAuthUseCase.UseCase;
   let hasherCompare = new BcryptAdapter.CompareAdapter();
@@ -26,7 +26,7 @@ describe("create user use case integration test", () => {
     await prismaClient.user.deleteMany({ where: {} });
   });
 
-  it("should create a user", async () => {
+  it("should auth a user", async () => {
     const entity = new User(new BcryptAdapter.HasherAdapter(12), {
       email: "some@email.com",
       name: "some name",
