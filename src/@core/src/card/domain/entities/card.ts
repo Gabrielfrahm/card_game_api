@@ -15,12 +15,14 @@ export type CardProps = {
   def: string;
   effect: string;
   main_card: boolean;
+  created_at?: Date;
 };
 
 export class Card extends Entity<CardProps> {
   constructor(public readonly props: CardProps, id?: UniqueEntityId) {
     Card.validate(props);
     super(props, id);
+    this.props.created_at = this.created_at ?? new Date();
   }
 
   static validate(props: CardProps) {
@@ -65,5 +67,9 @@ export class Card extends Entity<CardProps> {
 
   get main_card(): boolean {
     return this.props.main_card;
+  }
+
+  get created_at(): Date {
+    return this.props.created_at;
   }
 }

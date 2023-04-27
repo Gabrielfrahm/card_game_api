@@ -1,6 +1,13 @@
 import { CardProps } from "#card/domain/entities/card";
 import { ClassValidatorFields } from "#seedwork/domain";
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class CardRules {
   @IsString()
@@ -38,6 +45,11 @@ export class CardRules {
   @IsBoolean()
   @IsNotEmpty()
   main_card: boolean;
+
+  @IsNotEmpty()
+  @IsDate()
+  @IsOptional()
+  created_at?: Date;
 
   constructor(data: CardProps) {
     Object.assign(this, data);
