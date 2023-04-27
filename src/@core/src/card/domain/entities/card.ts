@@ -1,4 +1,9 @@
-import { Entity, UniqueEntityId } from "#seedwork/domain";
+import {
+  Entity,
+  EntityValidationError,
+  UniqueEntityId,
+} from "#seedwork/domain";
+import CardValidatorFactory from "../validator/create/card.validator";
 
 export type CardProps = {
   name: string;
@@ -14,7 +19,16 @@ export type CardProps = {
 
 export class Card extends Entity<CardProps> {
   constructor(public readonly props: CardProps, id?: UniqueEntityId) {
+    Card.validate(props);
     super(props, id);
+  }
+
+  static validate(props: CardProps) {
+    const validator = CardValidatorFactory.create();
+    const isValid = validator.validate(props);
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors);
+    }
   }
 
   get name(): string {
