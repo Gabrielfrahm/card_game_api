@@ -1,5 +1,5 @@
 // created from 'create-ts-index'
 
-export * from "./entities";
-export * from "./repository";
-export * from "./validator";
+export * from './entities';
+export * from './repository';
+export * from './validator';

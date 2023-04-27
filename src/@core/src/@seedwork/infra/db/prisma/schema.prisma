@@ -31,3 +31,18 @@ model Auth {
 
   @@map("auths")
 }
+
+model Card {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  number      Int      @unique
+  category    String
+  image_url   String
+  description String
+  atk         String
+  def         String
+  effect      String
+  main_card   Boolean
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+}

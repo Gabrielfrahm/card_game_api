@@ -84,6 +84,7 @@
     "prisma:combine": "node ./src/@seedwork/infra/db/prisma/combine.ts",
     "prisma:test": "dotenv -e .env.test -- npx prisma migrate deploy --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
+    "prisma:generate": "npx prisma generate --schema=./src/@seedwork/infra/db/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=./src/@seedwork/infra/db/prisma/schema.prisma"
   },
   "author": "",
@@ -102,13 +103,13 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@prisma/client": "^4.12.0",
+    "@prisma/client": "^4.13.0",
     "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.0",
-    "prisma": "^4.12.0",
+    "prisma": "^4.13.0",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
   }
