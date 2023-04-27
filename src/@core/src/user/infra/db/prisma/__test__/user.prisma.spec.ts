@@ -31,7 +31,6 @@ describe("user prisma unit test", () => {
         id: user.id,
       },
     });
-    console.log(model.id);
     expect(user.toJSON()).toStrictEqual({
       id: model.id,
       email: model.email,
