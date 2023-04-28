@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   CreateCardUseCase,
@@ -21,8 +22,10 @@ import {
   CardCollectionPresenter,
   CardPresenter,
 } from './presenter/card.presenter';
+import { RedisCacheInterceptor } from './Interceptors/redis-cache.interceptor';
 
 @Controller('cards')
+@UseInterceptors(RedisCacheInterceptor)
 export class CardController {
   @Inject(CreateCardUseCase.UseCase)
   private createUseCase: CreateCardUseCase.UseCase;
