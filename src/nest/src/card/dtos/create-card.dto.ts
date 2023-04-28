@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { CreateCardUseCase } from 'core/card/application';
 
 export class CreateCardDto implements CreateCardUseCase.Input {
@@ -34,7 +40,7 @@ export class CreateCardDto implements CreateCardUseCase.Input {
   @IsNotEmpty()
   effect: string;
 
-  @IsString()
+  @IsBoolean()
   @IsNotEmpty()
   main_card: boolean;
 

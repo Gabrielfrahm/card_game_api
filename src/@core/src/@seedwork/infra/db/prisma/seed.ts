@@ -1,17 +1,23 @@
+import { BcryptAdapter } from "../../../infra/cryptography";
+import { User } from "#user/domain";
 import { prismaClient } from "../testing";
 
 async function main() {
-  await prismaClient.card.create({
+  const user = new User(new BcryptAdapter.HasherAdapter(12), {
+    email: "admin@admin.com",
+    name: "Admin",
+    password: "dev@123",
+    email_confirmation: true,
+  });
+  await user.setPassword(user.password);
+  await prismaClient.user.create({
     data: {
-      name: "some name 1",
-      number: 1,
-      category: "monster 1",
-      image_url: "some image 1",
-      description: "some description 1",
-      atk: "atk 1",
-      def: "def 1",
-      effect: "some effect 1",
-      main_card: false,
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      email_confirmation: user.email_confirmation,
+      created_at: user.created_at,
     },
   });
 }

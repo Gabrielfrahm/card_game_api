@@ -1,17 +1,12 @@
 import {
   CreateUserUseCase,
   GetUserUseCase,
-  ListUserUseCase,
   UpdateUserUseCase,
 } from 'core/user/application';
 import { UsersController } from '../../users.controller';
 import { CreateUserDto } from '../../dtos/create-user.dto';
-import {
-  UserCollectionPresenter,
-  UserPresenter,
-} from '../../presenter/user.presenter';
+import { UserPresenter } from '../../presenter/user.presenter';
 import { UpdateUserDto } from '../../dtos/update-user';
-import { SortDirection } from 'core/@seedwork/domain';
 
 describe('user controller unit test', () => {
   let controller: UsersController;
