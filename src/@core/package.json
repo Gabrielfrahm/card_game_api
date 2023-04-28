@@ -70,6 +70,9 @@
       ]
     }
   },
+  "prisma": {
+    "seed": "ts-node ./src/@seedwork/infra/db/prisma/seed.ts"
+  },
   "scripts": {
     "ts-node": "ts-node",
     "tsc": "tsc",

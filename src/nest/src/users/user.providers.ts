@@ -10,6 +10,7 @@ import {
 
 import { UserInMemoryRepository, UserPrismaRepository } from 'core/user/infra';
 import { prismaClient, BcryptAdapter } from 'core/@seedwork/infra';
+import { JWTAdapter } from 'core/auth/infra';
 
 export namespace USER_PROVIDERS {
   export namespace REPOSITORIES {
@@ -27,6 +28,15 @@ export namespace USER_PROVIDERS {
     export const USER_REPOSITORY = {
       provide: 'UserRepository',
       useExisting: 'UserPrismaRepository',
+    };
+  }
+
+  export namespace JWT {
+    export const JWT_ADAPTER = {
+      provide: 'JWT',
+      useFactory: () => {
+        return new JWTAdapter(process.env.JWT_SECRET);
+      },
     };
   }
 

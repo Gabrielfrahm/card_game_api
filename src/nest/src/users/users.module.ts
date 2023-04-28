@@ -7,8 +7,6 @@ import { RedisCacheMiddleware } from './middlewares/redis.middleware';
 import { RedisModule } from 'src/redis/redis.module';
 
 import { AuthenticatedMiddleware } from 'src/@share/middlewares/auth/authenticated.middleware';
-import { JWTAdapter } from 'core/auth/infra';
-
 @Module({
   imports: [RedisModule],
   controllers: [UsersController],
@@ -16,14 +14,9 @@ import { JWTAdapter } from 'core/auth/infra';
     ...Object.values(USER_PROVIDERS.USE_CASES),
     ...Object.values(USER_PROVIDERS.REPOSITORIES),
     ...Object.values(USER_PROVIDERS.HASH),
+    ...Object.values(USER_PROVIDERS.JWT),
     RedisCacheMiddleware,
     RedisCacheInterceptor,
-    {
-      provide: 'JWT',
-      useFactory: () => {
-        return new JWTAdapter(process.env.JWT_SECRET);
-      },
-    },
     AuthenticatedMiddleware,
   ],
 })
