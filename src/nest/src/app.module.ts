@@ -8,7 +8,13 @@ import { AuthenticateModule } from './authenticate/authenticate.module';
 import { CardModule } from './card/card.module';
 
 @Module({
-  imports: [UsersModule, shareModule, RedisModule, AuthenticateModule, CardModule],
+  imports: [
+    UsersModule,
+    shareModule,
+    RedisModule,
+    AuthenticateModule,
+    CardModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
