@@ -17,6 +17,7 @@ model User {
   updated_at         DateTime @default(now())
 
   auths Auth?
+  Deck  Deck[]
 
   @@map("users")
 }
@@ -33,9 +34,9 @@ model Auth {
 }
 
 model Card {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  number      Int      @unique
+  id          String     @id @default(uuid())
+  name        String     @unique
+  number      Int        @unique
   category    String
   image_url   String
   description String
@@ -43,6 +44,36 @@ model Card {
   def         String
   effect      String
   main_card   Boolean
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now())
+  Deck        Deck[]
+  DeckCard    DeckCard[]
+
+  @@map("cards")
+}
+
+model Deck {
+  id           String     @id @default(uuid())
+  name         String
+  user_id      String
+  user         User       @relation(fields: [user_id], references: [id])
+  main_card_id String
+  card         Card       @relation(fields: [main_card_id], references: [id])
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now())
+  DeckCard     DeckCard[]
+
+  @@map("decks")
+}
+
+model DeckCard {
+  id         String   @id @default(uuid())
+  deck       Deck     @relation(fields: [deck_id], references: [id], onDelete: Cascade)
+  deck_id    String
+  card       Card     @relation(fields: [card_id], references: [id])
+  card_id    String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("deck_cards")
 }
