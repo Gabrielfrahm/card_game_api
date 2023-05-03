@@ -18,7 +18,11 @@
     "#card/domain": "./dist/card/domain/index.js",
     "#card/application": "./dist/card/application/index.js",
     "#card/infra": "./dist/card/infra/index.js",
-    "#card/*": "./dist/card/*.js"
+    "#card/*": "./dist/card/*.js",
+    "#deck/domain": "./dist/deck/domain/index.js",
+    "#deck/application": "./dist/deck/application/index.js",
+    "#deck/infra": "./dist/deck/infra/index.js",
+    "#deck/*": "./dist/deck/*.js"
   },
   "exports": {
     "./@seedwork/application": "./dist/@seedwork/application/index.js",
@@ -31,7 +35,10 @@
     "./auth/infra": "./dist/auth/infra/index.js",
     "./card/application": "./dist/card/application/index.js",
     "./card/domain": "./dist/card/domain/index.js",
-    "./card/infra": "./dist/card/infra/index.js"
+    "./card/infra": "./dist/card/infra/index.js",
+    "./deck/application": "./dist/deck/application/index.js",
+    "./deck/domain": "./dist/deck/domain/index.js",
+    "./deck/infra": "./dist/deck/infra/index.js"
   },
   "typesVersions": {
     ">=4.0": {
@@ -67,6 +74,15 @@
       ],
       "card/infra": [
         "./dist/card/infra/index.d.ts"
+      ],
+      "deck/application": [
+        "./dist/deck/application/index.d.ts"
+      ],
+      "deck/domain": [
+        "./dist/deck/domain/index.d.ts"
+      ],
+      "deck/infra": [
+        "./dist/deck/infra/index.d.ts"
       ]
     }
   },

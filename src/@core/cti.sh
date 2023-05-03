@@ -14,3 +14,7 @@ npm run cti create './src/auth/infra' -- -i '*spec.ts' -b
 npm run cti create './src/card/application' -- -i '*spec.ts'  -b &&
 npm run cti create './src/card/domain' -- -i '*spec.ts' -b &&
 npm run cti create './src/card/infra' -- -i '*spec.ts' -b
+
+npm run cti create './src/deck/application' -- -i '*spec.ts'  -b &&
+npm run cti create './src/deck/domain' -- -i '*spec.ts' -b &&
+npm run cti create './src/deck/infra' -- -i '*spec.ts' -b

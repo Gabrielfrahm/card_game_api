@@ -15,6 +15,9 @@
       "#card/*": [
         "./card/*"
       ],
+      "#deck/*": [
+        "./deck/*"
+      ],
     },
     "outDir": "./dist",
   },
