@@ -42,6 +42,10 @@ export class Deck extends Entity<DeckProps> {
     }
   }
 
+  set name(name: string) {
+    this.name = name;
+  }
+
   get name(): string {
     return this.props.name;
   }
