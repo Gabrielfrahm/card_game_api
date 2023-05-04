@@ -1,4 +1,5 @@
 import { Card } from "#card/domain";
+import { CardModelMapper } from "#card/infra";
 import { Deck } from "#deck/domain";
 import { UniqueEntityId } from "#seedwork/domain";
 import { BcryptAdapter, prismaClient } from "#seedwork/infra";
@@ -15,9 +16,10 @@ describe("deck prisma unit test", () => {
 
   afterEach(async () => {
     await prismaClient.deck.deleteMany({ where: {} });
+    await prismaClient.deckCard.deleteMany({ where: {} });
   });
 
-  it("Should be inserts a deck", async () => {
+  it("Should be crud a deck", async () => {
     const deck = new Deck({
       name: "deck 1",
       user: new User(
@@ -82,6 +84,55 @@ describe("deck prisma unit test", () => {
       created_at: model.created_at,
     });
 
-    console.log(await repository.findById(model.id));
+    let deckFind = await repository.findById(model.id);
+    expect(deckFind.id).toBe(deck.id);
+
+    let decksFind = await repository.findAll();
+    expect(decksFind).toHaveLength(1);
+
+    const newCard = await prismaClient.card.create({
+      data: {
+        id: "81513b4a-90a6-44c1-b2bd-142ecf66f075",
+        name: "some name 2",
+        number: 2,
+        category: "monster 2",
+        image_url: "some image 2",
+        description: "some description 2",
+        atk: "atk 2",
+        def: "def 2",
+        effect: "some effect 2",
+        main_card: true,
+      },
+    });
+    deck.addCard(CardModelMapper.toEntity(newCard));
+    deck.update({ name: "new name" });
+    await repository.update(deck);
+    deckFind = await repository.findById(model.id);
+    expect(deckFind.cards).toHaveLength(2);
+    expect(deckFind.name).toBe("new name");
+
+    deck.update({ main_card: CardModelMapper.toEntity(newCard) });
+    await repository.update(deck);
+    deckFind = await repository.findById(model.id);
+
+    expect(deckFind.main_card.id).toBe(newCard.id);
+
+    deck.removeCard(newCard.id);
+    await repository.update(deck);
+    deckFind = await repository.findById(model.id);
+    expect(deckFind.cards).toHaveLength(1);
+
+    await repository.delete(model.id);
+    decksFind = await repository.findAll();
+    await prismaClient.card.delete({
+      where: {
+        id: newCard.id,
+      },
+    });
+    expect(decksFind).toHaveLength(0);
+  });
+
+  describe("search method test", () => {
+    it("should only apply paginate when other params are null ", async () => {});
   });
 });

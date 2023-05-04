@@ -107,6 +107,8 @@ export class CardPrismaRepository implements CardRepository.Repository {
         def: true,
         effect: true,
         image_url: true,
+        Deck: true,
+        DeckCard: true,
         main_card: true,
         created_at: true,
       },

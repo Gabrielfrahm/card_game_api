@@ -15,6 +15,11 @@ export type DeckProps = {
   created_at?: Date;
 };
 
+export type DeckPropsUpdate = {
+  name?: string;
+  main_card?: Card;
+};
+
 export class Deck extends Entity<DeckProps> {
   constructor(public readonly props: DeckProps, id?: UniqueEntityId) {
     Deck.validate(props);
@@ -42,8 +47,13 @@ export class Deck extends Entity<DeckProps> {
     }
   }
 
-  set name(name: string) {
-    this.name = name;
+  update({ name, main_card }: DeckPropsUpdate) {
+    if (name) {
+      this.props.name = name;
+    }
+    if (main_card) {
+      this.props.main_card = main_card;
+    }
   }
 
   get name(): string {
