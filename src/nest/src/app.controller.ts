@@ -8,7 +8,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    // console.log(CreateUserUseCase);
     return this.appService.getHello();
   }
 }

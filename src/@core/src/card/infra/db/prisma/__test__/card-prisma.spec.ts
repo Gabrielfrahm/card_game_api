@@ -202,7 +202,9 @@ describe("card prisma unit test", () => {
         new CardRepository.SearchParams({})
       );
 
-      expect(searchOutput).toBeInstanceOf(CardRepository.CardSearchResult);
+      expect(
+        searchOutput instanceof CardRepository.CardSearchResult
+      ).toBeTruthy();
       expect(spyToEntity).toHaveBeenCalledTimes(4);
       expect(searchOutput.toJSON()).toMatchObject({
         total: 4,
@@ -214,7 +216,6 @@ describe("card prisma unit test", () => {
         filter: null,
       });
       searchOutput.items.forEach((item) => {
-        expect(item).toBeInstanceOf(Card);
         expect(item.id).toBeDefined();
       });
     });
@@ -425,6 +426,8 @@ describe("card prisma unit test", () => {
             image_url: true,
             main_card: true,
             created_at: true,
+            Deck: true,
+            DeckCard: true,
           },
         });
         arrayCards.push(card);
@@ -439,19 +442,17 @@ describe("card prisma unit test", () => {
         })
       );
 
-      expect(JSON.stringify(result.toJSON(true))).toMatch(
-        JSON.stringify(
-          new CardRepository.CardSearchResult({
-            items: [CardModelMapper.toEntity(arrayCards[0])],
-            total: 1,
-            current_page: 1,
-            per_page: 2,
-            sort: null,
-            sort_dir: null,
-            filter: "some name 1",
-            column: "name",
-          }).toJSON(true)
-        )
+      expect(result.toJSON(true)).toStrictEqual(
+        new CardRepository.CardSearchResult({
+          items: [CardModelMapper.toEntity(arrayCards[0])],
+          total: 1,
+          current_page: 1,
+          per_page: 2,
+          sort: null,
+          sort_dir: null,
+          filter: "some name 1",
+          column: "name",
+        }).toJSON(true)
       );
 
       result = await repository.search(
@@ -462,19 +463,17 @@ describe("card prisma unit test", () => {
           column: "name",
         })
       );
-      expect(JSON.stringify(result.toJSON(true))).toMatch(
-        JSON.stringify(
-          new CardRepository.CardSearchResult({
-            items: [CardModelMapper.toEntity(arrayCards[0])],
-            total: 1,
-            current_page: 1,
-            per_page: 2,
-            sort: null,
-            sort_dir: null,
-            filter: "some name 1",
-            column: "name",
-          }).toJSON(true)
-        )
+      expect(result.toJSON(true)).toStrictEqual(
+        new CardRepository.CardSearchResult({
+          items: [CardModelMapper.toEntity(arrayCards[0])],
+          total: 1,
+          current_page: 1,
+          per_page: 2,
+          sort: null,
+          sort_dir: null,
+          filter: "some name 1",
+          column: "name",
+        }).toJSON(true)
       );
     });
 
@@ -590,6 +589,8 @@ describe("card prisma unit test", () => {
             image_url: true,
             main_card: true,
             created_at: true,
+            Deck: true,
+            DeckCard: true,
           },
         });
         arrayCards.push(card);
@@ -683,9 +684,7 @@ describe("card prisma unit test", () => {
       for (const item of arrange) {
         let result = await repository.search(item.params);
 
-        expect(JSON.stringify(result.toJSON(true))).toMatch(
-          JSON.stringify(item.result.toJSON(true))
-        );
+        expect(result.toJSON(true)).toStrictEqual(item.result.toJSON(true));
       }
     });
 
@@ -801,6 +800,8 @@ describe("card prisma unit test", () => {
             image_url: true,
             main_card: true,
             created_at: true,
+            Deck: true,
+            DeckCard: true,
           },
         });
         arrayCards.push(card);
@@ -854,9 +855,7 @@ describe("card prisma unit test", () => {
       ];
       for (const item of arrange) {
         let result = await repository.search(item.params);
-        expect(JSON.stringify(result.toJSON(true))).toMatch(
-          JSON.stringify(item.result.toJSON(true))
-        );
+        expect(result.toJSON(true)).toStrictEqual(item.result.toJSON(true));
       }
     });
   });

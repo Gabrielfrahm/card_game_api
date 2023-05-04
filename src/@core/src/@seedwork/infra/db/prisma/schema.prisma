@@ -57,8 +57,8 @@ model Deck {
   name         String
   user_id      String
   user         User       @relation(fields: [user_id], references: [id])
-  main_card_id String
-  card         Card       @relation(fields: [main_card_id], references: [id])
+  main_card_id String?
+  card         Card?      @relation(fields: [main_card_id], references: [id])
   created_at   DateTime   @default(now())
   updated_at   DateTime   @default(now())
   DeckCard     DeckCard[]

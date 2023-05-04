@@ -36,25 +36,35 @@ type ModelProps = {
 
 export class DeckModelMapper {
   static toEntity(model: ModelProps) {
-    const user = new User(new BcryptAdapter.HasherAdapter(12), {
-      email: model.user.email,
-      name: model.user.name,
-      password: model.user.password,
-      email_confirmation: model.user.email_confirmation,
-      created_at: model.user.created_at,
-    });
-    const main_card = new Card(
+    let cards: Card[];
+    let main_card: Card;
+    const user = new User(
+      new BcryptAdapter.HasherAdapter(12),
       {
-        ...model.card,
+        email: model.user.email,
+        name: model.user.name,
+        password: model.user.password,
+        email_confirmation: model.user.email_confirmation,
+        created_at: model.user.created_at,
       },
-      new UniqueEntityId(model.card.id)
+      new UniqueEntityId(model.user.id)
     );
-    const cards = model.DeckCard.map(
-      (item) =>
-        new Card({
-          ...item.card,
-        })
-    );
+    if (model.card) {
+      main_card = new Card(
+        {
+          ...model.card,
+        },
+        new UniqueEntityId(model.card.id)
+      );
+    }
+    if (model.DeckCard) {
+      cards = model.DeckCard.map(
+        (item) =>
+          new Card({
+            ...item.card,
+          })
+      );
+    }
     const deck = new Entity(
       {
         name: model.name,

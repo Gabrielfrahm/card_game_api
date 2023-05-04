@@ -41,6 +41,7 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
         card: true,
         main_card_id: true,
         created_at: true,
+        _count: true,
       },
       take: take,
       skip: skip,
@@ -76,27 +77,27 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
   async insert(entity: Deck): Promise<void> {
     await this._getByName(entity.name);
 
-    const createDeck = this.deckModel.deck.create({
+    await this.deckModel.deck.create({
       data: {
         id: entity.id,
         name: entity.name,
         user_id: entity.user.id,
-        main_card_id: entity.main_card.id,
+        main_card_id: entity.main_card ? entity.main_card.id : null,
         created_at: entity.created_at,
       },
     });
 
-    await this.deckModel.$transaction([
-      createDeck,
-      ...entity.cards.map((item) =>
-        this.deckModel.deckCard.create({
-          data: {
-            deck_id: entity.id,
-            card_id: item.id,
-          },
-        })
-      ),
-    ]);
+    if (entity.cards) {
+      entity.cards.map(
+        async (item) =>
+          await this.deckModel.deckCard.create({
+            data: {
+              deck_id: entity.id,
+              card_id: item.id,
+            },
+          })
+      );
+    }
   }
 
   async findById(id: string | UniqueEntityId): Promise<Deck> {
@@ -159,7 +160,6 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
   async delete(id: string): Promise<void> {
     const _id = `${id}`;
     await this._get(_id);
-    console.log(_id);
     await this.deckModel.deck.delete({
       where: {
         id: _id,

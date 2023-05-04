@@ -312,7 +312,6 @@ describe("deck in memory repository unit test", () => {
           }),
         ];
         const itemsSorted = await repository["applySort"](items, null, null);
-        console.log(itemsSorted);
         expect(itemsSorted).toStrictEqual([items[1], items[0]]);
       });
 
