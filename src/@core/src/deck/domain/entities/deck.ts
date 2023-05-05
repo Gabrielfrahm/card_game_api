@@ -18,6 +18,7 @@ export type DeckProps = {
 export type DeckPropsUpdate = {
   name?: string;
   main_card?: Card;
+  cards?: Card[];
 };
 
 export class Deck extends Entity<DeckProps> {
@@ -39,20 +40,28 @@ export class Deck extends Entity<DeckProps> {
     this.cards.push(card);
   }
 
-  removeCard(cardId: string): void {
-    const findCard = this.props.cards.find((item) => item.id === cardId);
-    const index = this.props.cards.indexOf(findCard);
-    if (index !== -1) {
-      this.props.cards.splice(index, 1);
-    }
+  clearCard(): void {
+    this.props.cards = [];
   }
 
-  update({ name, main_card }: DeckPropsUpdate) {
+  // removeCard(cardId: string): void {
+  //   const findCard = this.props.cards.find((item) => item.id === cardId);
+  //   const index = this.props.cards.indexOf(findCard);
+  //   if (index !== -1) {
+  //     this.props.cards.splice(index, 1);
+  //   }
+  // }
+
+  update({ name, main_card, cards }: DeckPropsUpdate) {
     if (name) {
       this.props.name = name;
     }
     if (main_card) {
       this.props.main_card = main_card;
+    }
+    if (cards) {
+      this.clearCard();
+      cards.map((item) => this.addCard(item));
     }
   }
 

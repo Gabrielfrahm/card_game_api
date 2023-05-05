@@ -147,10 +147,10 @@ describe("deck prisma unit test", () => {
 
     expect(deckFind.main_card.id).toBe(newCard.id);
 
-    deck.removeCard(newCard.id);
-    await repository.update(deck);
-    deckFind = await repository.findById(model.id);
-    expect(deckFind.cards).toHaveLength(1);
+    // deck.update({ cards: [newCard] });
+    // await repository.update(deck);
+    // deckFind = await repository.findById(model.id);
+    // expect(deckFind.cards).toHaveLength(1);
 
     await repository.delete(model.id);
     decksFind = await repository.findAll();

@@ -20,7 +20,7 @@ type DeckCardsProps = {
   card_id: string;
   created_at: Date;
   updated_at: Date;
-  card: CardP;
+  card: Omit<CardP, "updated_at">;
 };
 
 type ModelProps = {
@@ -29,7 +29,7 @@ type ModelProps = {
   user: UserP;
   user_id: string;
   DeckCard: DeckCardsProps[];
-  card: CardP;
+  card: Omit<CardP, "updated_at">;
   main_card_id: string;
   created_at: Date;
 };

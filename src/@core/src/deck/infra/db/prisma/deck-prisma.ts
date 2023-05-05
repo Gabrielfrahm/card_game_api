@@ -100,7 +100,9 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
     }
   }
 
-  async findById(id: string | UniqueEntityId): Promise<Deck> {
+  async findById(
+    id: string | UniqueEntityId
+  ): Promise<Omit<Deck, "updated_at">> {
     const _id = `${id}`;
     const model = await this._get(_id);
     if (model) {
@@ -199,10 +201,38 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
         user_id: true,
         DeckCard: {
           include: {
-            card: true,
+            card: {
+              select: {
+                id: true,
+                name: true,
+                number: true,
+                description: true,
+                category: true,
+                atk: true,
+                def: true,
+                effect: true,
+                image_url: true,
+                main_card: true,
+                created_at: true,
+              },
+            },
           },
         },
-        card: true,
+        card: {
+          select: {
+            id: true,
+            name: true,
+            number: true,
+            description: true,
+            category: true,
+            atk: true,
+            def: true,
+            effect: true,
+            image_url: true,
+            main_card: true,
+            created_at: true,
+          },
+        },
         main_card_id: true,
         created_at: true,
       },
