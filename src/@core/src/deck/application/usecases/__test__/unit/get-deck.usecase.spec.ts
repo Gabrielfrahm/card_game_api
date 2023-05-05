@@ -7,23 +7,24 @@ import { UniqueEntityId } from "#seedwork/domain";
 import { BcryptAdapter } from "#seedwork/infra";
 import { CreateUserUseCase } from "#user/application";
 import { User } from "#user/domain";
+import GetDeckUseCase from "../../get-deck.usecase";
 import UpdateDeckUseCase from "../../update-deck.usecase";
 
-describe("update deck use case unit test", () => {
+describe("get deck use case unit test", () => {
   let repository: DeckInMemoryRepository;
   let cardRepository: CardInMemoryRepository;
-  let useCase: UpdateDeckUseCase.UseCase;
+  let useCase: GetDeckUseCase.UseCase;
   let cardUseCase: CreateCardUseCase.UseCase;
 
   beforeEach(() => {
     repository = new DeckInMemoryRepository();
     cardRepository = new CardInMemoryRepository();
-    useCase = new UpdateDeckUseCase.UseCase(repository, cardRepository);
+    useCase = new GetDeckUseCase.UseCase(repository);
     cardUseCase = new CreateCardUseCase.UseCase(cardRepository);
   });
 
-  it("should update a deck", async () => {
-    const spyRepository = jest.spyOn(repository, "update");
+  it("should get a deck", async () => {
+    const spyRepository = jest.spyOn(repository, "findById");
     let card = await cardUseCase.execute({
       name: "some name 1",
       number: 1,
@@ -81,14 +82,11 @@ describe("update deck use case unit test", () => {
     });
 
     repository.items = [deck];
-    console.log(deck.cards);
 
     let output = await useCase.execute({
       id: deck.id,
-      name: "deck update",
-      cards: [card.id],
-      main_card_id: card.id,
     });
+
     expect(spyRepository).toHaveBeenCalledTimes(1);
     expect(output).toStrictEqual({
       id: repository.items[0].id,
