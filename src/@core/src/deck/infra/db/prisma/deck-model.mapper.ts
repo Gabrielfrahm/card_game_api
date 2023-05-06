@@ -26,7 +26,7 @@ type DeckCardsProps = {
 type ModelProps = {
   id: string;
   name: string;
-  user: UserP;
+  user: Omit<UserP, "updated_at">;
   user_id: string;
   DeckCard: DeckCardsProps[];
   card: Omit<CardP, "updated_at">;

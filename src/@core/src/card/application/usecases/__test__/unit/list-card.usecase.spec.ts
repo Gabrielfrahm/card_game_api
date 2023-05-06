@@ -1,6 +1,6 @@
 import { Card, CardRepository } from "#card/domain";
 import { CardInMemoryRepository } from "#card/infra";
-import { UniqueEntityId } from "#seedwork/domain";
+
 import ListCardUseCase from "../../list-card.usecase";
 
 describe("list card  use case unit test", () => {

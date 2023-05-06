@@ -50,47 +50,35 @@ describe("deck prisma unit test", () => {
         main_card: true,
       },
     });
+    const card = new Card(
+      {
+        name: "some name 4",
+        number: 4,
+        category: "monster 4",
+        image_url: "some image 4",
+        description: "some description 4",
+        atk: "atk 4",
+        def: "def 4",
+        effect: "some effect 4",
+        main_card: true,
+      },
+      new UniqueEntityId("c1813f74-6815-4639-b8c2-957f8c7ddceb")
+    );
+
+    const user = new User(
+      new BcryptAdapter.HasherAdapter(12),
+      {
+        email: "dale@dale.com",
+        name: "user 1",
+        password: "123",
+      },
+      new UniqueEntityId("8c85dc97-ee89-4a87-b776-daef12976e0a")
+    );
     const deck = new Deck({
       name: "deck 1",
-      user: new User(
-        new BcryptAdapter.HasherAdapter(12),
-        {
-          email: "dale@dale.com",
-          name: "user 1",
-          password: "123",
-        },
-        new UniqueEntityId("8c85dc97-ee89-4a87-b776-daef12976e0a")
-      ),
-      cards: [
-        new Card(
-          {
-            name: "some name 4",
-            number: 4,
-            category: "monster 4",
-            image_url: "some image 4",
-            description: "some description 4",
-            atk: "atk 4",
-            def: "def 4",
-            effect: "some effect 4",
-            main_card: true,
-          },
-          new UniqueEntityId("c1813f74-6815-4639-b8c2-957f8c7ddceb")
-        ),
-      ],
-      main_card: new Card(
-        {
-          name: "some name 4",
-          number: 4,
-          category: "monster 4",
-          image_url: "some image 4",
-          description: "some description 4",
-          atk: "atk 4",
-          def: "def 4",
-          effect: "some effect 4",
-          main_card: true,
-        },
-        new UniqueEntityId("c1813f74-6815-4639-b8c2-957f8c7ddceb")
-      ),
+      user: user,
+      cards: [card],
+      main_card: card,
     });
 
     await repository.insert(deck);
@@ -242,24 +230,26 @@ describe("deck prisma unit test", () => {
       const arrange = [
         new Deck({
           name: "deck 1",
-          user,
+          user: user,
           created_at,
         }),
         new Deck({
           name: "deck 2",
-          user,
+          user: user,
           created_at,
         }),
         new Deck({
           name: "deck 3",
-          user,
+          user: user,
           created_at,
         }),
       ];
+
       await prismaClient.deck.create({
         data: {
           name: arrange[0].name,
           user_id: arrange[0].user.id,
+          main_card_id: null,
           created_at: arrange[0].created_at,
         },
       });
@@ -267,6 +257,7 @@ describe("deck prisma unit test", () => {
         data: {
           name: arrange[1].name,
           user_id: arrange[1].user.id,
+          main_card_id: null,
           created_at: arrange[1].created_at,
         },
       });
@@ -274,6 +265,7 @@ describe("deck prisma unit test", () => {
         data: {
           name: arrange[2].name,
           user_id: arrange[2].user.id,
+          main_card_id: null,
           created_at: arrange[2].created_at,
         },
       });
@@ -351,6 +343,7 @@ describe("deck prisma unit test", () => {
             id: decks.id,
             name: decks.name,
             user_id: decks.user.id,
+            main_card_id: null,
             created_at: decks.created_at,
           },
           select: {
@@ -485,6 +478,7 @@ describe("deck prisma unit test", () => {
             id: decks.id,
             name: decks.name,
             user_id: decks.user.id,
+            main_card_id: null,
             created_at: decks.created_at,
           },
           select: {
@@ -665,6 +659,7 @@ describe("deck prisma unit test", () => {
             id: decks.id,
             name: decks.name,
             user_id: decks.user.id,
+            main_card_id: null,
             created_at: decks.created_at,
           },
           select: {

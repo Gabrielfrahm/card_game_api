@@ -81,7 +81,6 @@ describe("update deck use case unit test", () => {
     });
 
     repository.items = [deck];
-    console.log(deck.cards);
 
     let output = await useCase.execute({
       id: deck.id,

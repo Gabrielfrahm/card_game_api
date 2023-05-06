@@ -12,19 +12,25 @@ export namespace UpdateDeckUseCase {
       private cardRepository: CardRepository.Repository
     ) {}
     async execute(input: Input): Promise<Output> {
-      let cards: Card[] = [];
       let main_card: Card;
       const entity = await this.deckRepository.findById(input.id);
+      if (!input.cards) {
+        entity.clearCard();
+      }
       if (input.cards) {
+        entity.clearCard();
         input.cards.map(async (item) => {
-          cards.push(await this.cardRepository.findById(item));
+          const card = await this.cardRepository.findById(item);
+          if (card) {
+            entity.addCard(card);
+          }
         });
       }
 
       if (input.main_card_id) {
         main_card = await this.cardRepository.findById(input.main_card_id);
       }
-      entity.update({ name: input.name, main_card, cards });
+      entity.update({ name: input.name, main_card });
 
       await this.deckRepository.update(entity);
       return DeckOutputMapper.toOutput(entity);

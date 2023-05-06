@@ -18,7 +18,6 @@ export type DeckProps = {
 export type DeckPropsUpdate = {
   name?: string;
   main_card?: Card;
-  cards?: Card[];
 };
 
 export class Deck extends Entity<DeckProps> {
@@ -52,16 +51,12 @@ export class Deck extends Entity<DeckProps> {
   //   }
   // }
 
-  update({ name, main_card, cards }: DeckPropsUpdate) {
+  update({ name, main_card }: DeckPropsUpdate) {
     if (name) {
       this.props.name = name;
     }
     if (main_card) {
       this.props.main_card = main_card;
-    }
-    if (cards) {
-      this.clearCard();
-      cards.map((item) => this.addCard(item));
     }
   }
 

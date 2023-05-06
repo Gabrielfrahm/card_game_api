@@ -1,19 +1,23 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "email" TEXT NOT NULL,
+    "email_confirmation" BOOLEAN NOT NULL,
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
-  - You are about to drop the `Card` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropIndex
-DROP INDEX "Card_number_key";
-
--- DropIndex
-DROP INDEX "Card_name_key";
-
--- DropTable
-PRAGMA foreign_keys=off;
-DROP TABLE "Card";
-PRAGMA foreign_keys=on;
+-- CreateTable
+CREATE TABLE "auths" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "token" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "auths_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
 
 -- CreateTable
 CREATE TABLE "cards" (
@@ -31,22 +35,20 @@ CREATE TABLE "cards" (
     "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- RedefineTables
-PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_decks" (
+-- CreateTable
+CREATE TABLE "decks" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
-    "main_card_id" TEXT NOT NULL,
+    "main_card_id" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "decks_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "decks_main_card_id_fkey" FOREIGN KEY ("main_card_id") REFERENCES "cards" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "decks_main_card_id_fkey" FOREIGN KEY ("main_card_id") REFERENCES "cards" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
-INSERT INTO "new_decks" ("created_at", "id", "main_card_id", "name", "updated_at", "user_id") SELECT "created_at", "id", "main_card_id", "name", "updated_at", "user_id" FROM "decks";
-DROP TABLE "decks";
-ALTER TABLE "new_decks" RENAME TO "decks";
-CREATE TABLE "new_deck_cards" (
+
+-- CreateTable
+CREATE TABLE "deck_cards" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "deck_id" TEXT NOT NULL,
     "card_id" TEXT NOT NULL,
@@ -55,11 +57,15 @@ CREATE TABLE "new_deck_cards" (
     CONSTRAINT "deck_cards_deck_id_fkey" FOREIGN KEY ("deck_id") REFERENCES "decks" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "deck_cards_card_id_fkey" FOREIGN KEY ("card_id") REFERENCES "cards" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_deck_cards" ("card_id", "created_at", "deck_id", "id", "updated_at") SELECT "card_id", "created_at", "deck_id", "id", "updated_at" FROM "deck_cards";
-DROP TABLE "deck_cards";
-ALTER TABLE "new_deck_cards" RENAME TO "deck_cards";
-PRAGMA foreign_key_check;
-PRAGMA foreign_keys=ON;
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "auths_token_key" ON "auths"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "auths_user_id_key" ON "auths"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "cards_name_key" ON "cards"("name");

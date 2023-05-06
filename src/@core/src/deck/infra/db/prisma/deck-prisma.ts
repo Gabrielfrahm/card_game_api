@@ -31,14 +31,51 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
       select: {
         id: true,
         name: true,
-        user: true,
+        user: {
+          select: {
+            id: true,
+            email: true,
+            email_confirmation: true,
+            name: true,
+            password: true,
+            created_at: true,
+          },
+        },
         user_id: true,
         DeckCard: {
           include: {
-            card: true,
+            card: {
+              select: {
+                id: true,
+                name: true,
+                number: true,
+                description: true,
+                category: true,
+                atk: true,
+                def: true,
+                effect: true,
+                image_url: true,
+                main_card: true,
+                created_at: true,
+              },
+            },
           },
         },
-        card: true,
+        card: {
+          select: {
+            id: true,
+            name: true,
+            number: true,
+            description: true,
+            category: true,
+            atk: true,
+            def: true,
+            effect: true,
+            image_url: true,
+            main_card: true,
+            created_at: true,
+          },
+        },
         main_card_id: true,
         created_at: true,
         _count: true,
@@ -133,30 +170,69 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
   async update(entity: Deck): Promise<void> {
     const model = await this._get(entity.id);
     await this._getByName(entity.name, entity.id);
-    await this.deckModel.$transaction([
-      this.deckModel.deckCard.deleteMany({
+
+    await this.deckModel.deck.update({
+      where: {
+        id: entity.id,
+      },
+      data: {
+        name: entity.name,
+        main_card_id: entity.main_card ? entity.main_card.id : null,
+      },
+    });
+
+    if (entity.cards) {
+      const checkDeckCard = await this.deckModel.deckCard.findMany({
         where: {
           deck_id: model.id,
         },
-      }),
-      ...entity.cards.map((item) =>
-        this.deckModel.deckCard.create({
-          data: {
-            deck_id: entity.id,
-            card_id: item.id,
+      });
+
+      if (checkDeckCard.length > 0) {
+        await this.deckModel.deckCard.deleteMany({
+          where: {
+            deck_id: model.id,
           },
-        })
-      ),
-      this.deckModel.deck.update({
-        where: {
-          id: entity.id,
-        },
-        data: {
-          name: entity.name,
-          main_card_id: entity.main_card.id,
-        },
-      }),
-    ]);
+        });
+      }
+
+      if (entity.cards.length > 0) {
+        entity.cards.forEach(
+          async (item) =>
+            await this.deckModel.deckCard.create({
+              data: {
+                deck_id: entity.id,
+                card_id: item.id,
+              },
+            })
+        );
+      }
+    }
+
+    // await this.deckModel.$transaction([
+    //   this.deckModel.deckCard.deleteMany({
+    //     where: {
+    //       deck_id: model.id,
+    //     },
+    //   }),
+    //   ...entity.cards.map((item) =>
+    //     this.deckModel.deckCard.create({
+    //       data: {
+    //         deck_id: entity.id,
+    //         card_id: item.id,
+    //       },
+    //     })
+    //   ),
+    //   this.deckModel.deck.update({
+    //     where: {
+    //       id: entity.id,
+    //     },
+    //     data: {
+    //       name: entity.name,
+    //       main_card_id: entity.main_card ? entity.main_card.id : null,
+    //     },
+    //   }),
+    // ]);
   }
 
   async delete(id: string): Promise<void> {

@@ -1,1 +1,3 @@
-export * from "./deck.dto";
+// created from 'create-ts-index'
+
+export * from './deck.dto';

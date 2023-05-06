@@ -59,6 +59,8 @@ describe("list card use case integration test", () => {
         effect: true,
         main_card: true,
         created_at: true,
+        Deck: true,
+        DeckCard: true,
       },
     });
     const output = await useCase.execute({});
@@ -154,6 +156,8 @@ describe("list card use case integration test", () => {
         effect: true,
         main_card: true,
         created_at: true,
+        Deck: true,
+        DeckCard: true,
       },
     });
     let output = await useCase.execute({

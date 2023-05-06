@@ -129,7 +129,7 @@ export class CardPrismaRepository implements CardRepository.Repository {
   }
 
   private async _get(id: string) {
-    const card = await this.cardModel.card.findFirst({
+    const card = await this.cardModel.card.findUnique({
       where: {
         id: id,
       },

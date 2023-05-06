@@ -6,6 +6,7 @@ import { shareModule } from './@share/@share.module';
 import { RedisModule } from './redis/redis.module';
 import { AuthenticateModule } from './authenticate/authenticate.module';
 import { CardModule } from './card/card.module';
+import { DecksModule } from './decks/decks.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CardModule } from './card/card.module';
     RedisModule,
     AuthenticateModule,
     CardModule,
+    DecksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
