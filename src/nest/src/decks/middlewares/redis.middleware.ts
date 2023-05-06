@@ -32,6 +32,11 @@ export class RedisCacheMiddleware implements NestMiddleware {
           return res.json(JSON.parse(checkCache));
         }
         break;
+      case 'PUT':
+        cacheKey = `deck:${req.params.id}`;
+        await this.redisClient.del(cacheKey);
+        await this.redisClient.del(`deck:list`);
+        break;
       case 'DELETE':
         cacheKey = `deck:${req.params.id}`;
         await this.redisClient.del(cacheKey);
@@ -64,6 +69,10 @@ export class RedisCacheMiddleware implements NestMiddleware {
             3600,
           );
         }
+        break;
+      case 'PUT':
+        cacheKey = `deck:${req.params.id}`;
+        await this.redisClient.set(cacheKey, JSON.stringify(data), 'EX', 3600);
         break;
       default:
         break;
