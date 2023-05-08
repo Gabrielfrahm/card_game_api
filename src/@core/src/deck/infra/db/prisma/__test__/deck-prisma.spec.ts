@@ -105,7 +105,9 @@ describe("deck prisma unit test", () => {
     let deckFind = await repository.findById(model.id);
     expect(deckFind.id).toBe(deck.id);
 
-    let decksFind = await repository.findAll();
+    let decksFind = await repository.findAll(
+      "8c85dc97-ee89-4a87-b776-daef12976e0a"
+    );
     expect(decksFind).toHaveLength(1);
 
     const newCard = await prismaClient.card.create({
@@ -135,13 +137,10 @@ describe("deck prisma unit test", () => {
 
     expect(deckFind.main_card.id).toBe(newCard.id);
 
-    // deck.update({ cards: [newCard] });
-    // await repository.update(deck);
-    // deckFind = await repository.findById(model.id);
-    // expect(deckFind.cards).toHaveLength(1);
-
     await repository.delete(model.id);
-    decksFind = await repository.findAll();
+    decksFind = await repository.findAll(
+      "8c85dc97-ee89-4a87-b776-daef12976e0a"
+    );
     await prismaClient.card.delete({
       where: {
         id: newCard.id,
@@ -188,7 +187,8 @@ describe("deck prisma unit test", () => {
 
       const spyToEntity = jest.spyOn(DeckModelMapper, "toEntity");
       const searchOutput = await repository.search(
-        new DeckRepository.SearchParams({})
+        new DeckRepository.SearchParams({}),
+        "8c85dc97-ee89-4a87-b776-daef12976e0a"
       );
       expect(searchOutput).toBeInstanceOf(DeckRepository.DeckSearchResult);
       expect(spyToEntity).toHaveBeenCalledTimes(3);
@@ -271,7 +271,8 @@ describe("deck prisma unit test", () => {
       });
 
       const searchOutput = await repository.search(
-        new DeckRepository.SearchParams()
+        new DeckRepository.SearchParams(),
+        "8c85dc97-ee89-4a87-b776-daef12976e0a"
       );
       searchOutput.items.reverse().forEach((item, index) => {
         expect(`${item.name}${index + 1}`);
@@ -370,7 +371,8 @@ describe("deck prisma unit test", () => {
           per_page: 2,
           column: "name",
           filter: "some name 1",
-        })
+        }),
+        "8c85dc97-ee89-4a87-b776-daef12976e0a"
       );
 
       expect(JSON.stringify(result.toJSON(true))).toMatch(
@@ -394,7 +396,8 @@ describe("deck prisma unit test", () => {
           per_page: 2,
           filter: "some name 1",
           column: "name",
-        })
+        }),
+        "8c85dc97-ee89-4a87-b776-daef12976e0a"
       );
 
       expect(JSON.stringify(result.toJSON(true))).toMatch(
@@ -514,7 +517,7 @@ describe("deck prisma unit test", () => {
             ],
             per_page: 2,
             current_page: 1,
-            total: 2,
+            total: 6,
             sort: "name",
             sort_dir: "asc",
             filter: null,
@@ -534,7 +537,7 @@ describe("deck prisma unit test", () => {
             ],
             per_page: 2,
             current_page: 2,
-            total: 2,
+            total: 6,
             sort: "name",
             sort_dir: "asc",
             filter: null,
@@ -555,7 +558,7 @@ describe("deck prisma unit test", () => {
             ],
             per_page: 2,
             current_page: 1,
-            total: 2,
+            total: 6,
             sort: "name",
             sort_dir: "desc",
             filter: null,
@@ -576,7 +579,7 @@ describe("deck prisma unit test", () => {
             ],
             per_page: 2,
             current_page: 2,
-            total: 2,
+            total: 6,
             sort: "name",
             sort_dir: "desc",
             filter: null,
@@ -586,7 +589,10 @@ describe("deck prisma unit test", () => {
       ];
 
       for (const item of arrange) {
-        let result = await repository.search(item.params);
+        let result = await repository.search(
+          item.params,
+          "8c85dc97-ee89-4a87-b776-daef12976e0a"
+        );
 
         expect(JSON.stringify(result.toJSON(true))).toMatch(
           JSON.stringify(item.result.toJSON(true))
@@ -728,7 +734,10 @@ describe("deck prisma unit test", () => {
         },
       ];
       for (const item of arrange) {
-        let result = await repository.search(item.params);
+        let result = await repository.search(
+          item.params,
+          "8c85dc97-ee89-4a87-b776-daef12976e0a"
+        );
         expect(JSON.stringify(result.toJSON(true))).toMatch(
           JSON.stringify(item.result.toJSON(true))
         );

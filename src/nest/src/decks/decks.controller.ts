@@ -52,10 +52,16 @@ export class DecksController {
     return new DeckPresenter(output);
   }
 
-  @Get()
+  @Get(':userId')
   @HttpCode(200)
-  async search(@Query() searchDeckDto: SearchDeckDto) {
-    const output = await this.listUseCase.execute(searchDeckDto);
+  async search(
+    @Param('userId') user_id: string,
+    @Query() searchDeckDto: SearchDeckDto,
+  ) {
+    const output = await this.listUseCase.execute({
+      searchInputDto: searchDeckDto,
+      user_id: user_id,
+    });
     const { data, meta } = new DeckCollectionPresenter(output);
     return {
       data,
@@ -63,7 +69,7 @@ export class DecksController {
     };
   }
 
-  @Get(':id')
+  @Get('one/:id')
   @HttpCode(200)
   async findOne(@Param('id') id: string) {
     const output = await this.getUseCase.execute({ id: id });

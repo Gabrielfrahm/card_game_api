@@ -95,12 +95,15 @@ describe("list deck  use case unit test", () => {
       }),
     ];
     repository.items = items;
-    let output = await useCase.execute({
+    let searchInputDto = {
       page: 1,
       per_page: 2,
       sort: "name",
       filter: "a",
       column: "name",
+    };
+    let output = await useCase.execute({
+      searchInputDto,
     });
     expect(output).toStrictEqual({
       items: [items[1].toJSON(), items[2].toJSON()],
@@ -109,13 +112,15 @@ describe("list deck  use case unit test", () => {
       per_page: 2,
       last_page: 2,
     });
-
-    output = await useCase.execute({
+    searchInputDto = {
       page: 2,
       per_page: 2,
       sort: "name",
       filter: "a",
       column: "name",
+    };
+    output = await useCase.execute({
+      searchInputDto,
     });
 
     expect(output).toStrictEqual({
@@ -127,12 +132,14 @@ describe("list deck  use case unit test", () => {
     });
 
     output = await useCase.execute({
-      page: 1,
-      per_page: 2,
-      sort: "name",
-      sort_dir: "desc",
-      filter: "a",
-      column: "name",
+      searchInputDto: {
+        page: 1,
+        per_page: 2,
+        sort: "name",
+        sort_dir: "desc" as any,
+        filter: "a",
+        column: "name",
+      },
     });
     expect(output).toStrictEqual({
       items: [items[0].toJSON(), items[2].toJSON()],

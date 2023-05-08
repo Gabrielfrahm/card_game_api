@@ -102,7 +102,7 @@ describe("list Deck use case integration test", () => {
         created_at: true,
       },
     });
-    const output = await useCase.execute({});
+    const output = await useCase.execute({} as any);
 
     expect({
       total: output.total,

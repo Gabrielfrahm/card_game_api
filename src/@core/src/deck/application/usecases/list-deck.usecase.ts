@@ -12,8 +12,9 @@ export namespace ListDeckUseCase {
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(private DeckRepository: DeckRepository.Repository) {}
     async execute(input: Input): Promise<Output> {
-      const params = new DeckRepository.SearchParams(input);
-      const searchResult = await this.DeckRepository.search(params);
+      const { searchInputDto, user_id } = input;
+      const params = new DeckRepository.SearchParams(searchInputDto);
+      const searchResult = await this.DeckRepository.search(params, user_id);
       return this.toOutPut(searchResult);
     }
     private toOutPut(searchResult: DeckRepository.DeckSearchResult): Output {
@@ -26,7 +27,7 @@ export namespace ListDeckUseCase {
     }
   }
 
-  export type Input = SearchInputDto;
+  export type Input = { searchInputDto: SearchInputDto; user_id?: string };
 
   export type Output = PaginationOutputDto<DeckOutput>;
 }

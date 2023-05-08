@@ -5,7 +5,7 @@ export interface RepositoryInterface<E extends Entity> {
   insert(entity: E): Promise<void>;
   findById(id: string | UniqueEntityId): Promise<E>;
   findByEmail?(email: string): Promise<E>;
-  findAll(): Promise<E[]>;
+  findAll(id?: string): Promise<E[]>;
   update(entity: E): Promise<void>;
   delete(id: string | UniqueEntityId): Promise<void>;
 }
@@ -162,5 +162,5 @@ export interface SearchableRepositoryInterface<
   SearchOutput = SearchResult<E, Filter>
 > extends RepositoryInterface<E> {
   sortableFields: string[];
-  search(props: SearchInput): Promise<SearchOutput>;
+  search(props: SearchInput, id?: string): Promise<SearchOutput>;
 }

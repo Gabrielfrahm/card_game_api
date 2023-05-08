@@ -12,19 +12,29 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
   constructor(private deckModel: PrismaClient) {}
 
   async search(
-    props: DeckRepository.SearchParams
+    props: DeckRepository.SearchParams,
+    user_id: string
   ): Promise<DeckRepository.DeckSearchResult> {
     const skip = (props.page - 1) * props.per_page;
     const take = props.per_page;
 
     const decks = await this.deckModel.deck.findMany({
-      ...(props.filter && {
-        where: {
-          [props.column]: {
-            contains: props.filter,
+      where: {
+        AND: [
+          {
+            user_id: {
+              contains: user_id,
+            },
           },
-        },
-      }),
+          {
+            ...(props.filter && {
+              [props.column]: {
+                contains: props.filter,
+              },
+            }),
+          },
+        ],
+      },
       orderBy: {
         [props.sort ?? "created_at"]: props.sort_dir ?? "desc",
       },
@@ -85,6 +95,22 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
     });
 
     const count = await this.deckModel.deck.count({
+      where: {
+        AND: [
+          {
+            user_id: {
+              contains: user_id,
+            },
+          },
+          {
+            ...(props.filter && {
+              [props.column]: {
+                contains: props.filter,
+              },
+            }),
+          },
+        ],
+      },
       ...(props.filter && {
         where: {
           [props.column]: {
@@ -95,8 +121,6 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
       orderBy: {
         [props.sort ?? "created_at"]: props.sort_dir ?? "desc",
       },
-      take: take,
-      skip: skip,
     });
 
     return new DeckRepository.DeckSearchResult({
@@ -147,8 +171,13 @@ export class DeckPrismaRepository implements DeckRepository.Repository {
     }
   }
 
-  async findAll(): Promise<Deck[]> {
+  async findAll(user_id: string): Promise<Deck[]> {
     const model = await this.deckModel.deck.findMany({
+      ...(user_id && {
+        where: {
+          user_id: user_id,
+        },
+      }),
       select: {
         id: true,
         name: true,

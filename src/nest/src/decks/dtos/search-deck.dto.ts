@@ -5,6 +5,9 @@ import { SortDirection } from 'core/@seedwork/domain';
 
 export class SearchDeckDto implements ListDeckUseCase.Input {
   @IsOptional()
+  searchInputDto: SearchDeckDto;
+
+  @IsOptional()
   page?: number;
 
   @IsOptional()

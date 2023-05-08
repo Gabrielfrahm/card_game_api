@@ -56,7 +56,7 @@ model Deck {
   id           String     @id @default(uuid())
   name         String
   user_id      String
-  user         User       @relation(fields: [user_id], references: [id])
+  user         User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   main_card_id String?    @default("")
   card         Card?      @relation(fields: [main_card_id], references: [id])
   created_at   DateTime   @default(now())
