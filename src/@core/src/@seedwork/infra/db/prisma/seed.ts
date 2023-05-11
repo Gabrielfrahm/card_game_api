@@ -2,7 +2,6 @@ import { BcryptAdapter } from "../../../infra/cryptography";
 import { User } from "#user/domain";
 import { prismaClient } from "../testing";
 import { UniqueEntityId } from "#seedwork/domain";
-import { Card } from "#card/domain";
 
 async function main() {
   const user = new User(
@@ -27,36 +26,52 @@ async function main() {
     },
   });
 
-  const card = new Card(
+  const cardPrans = [
     {
-      name: "Salame man",
+      id: "c1813f74-6815-4639-b8c2-957f8c7ddceb",
+      name: "MALENIA BLADE OF MIQUELLA",
       number: 1,
-      category: "blue",
+      category: "sword",
       image_url:
-        "https://images.tcdn.com.br/img/img_prod/1123713/salame_tipo_sopressa_defumado_400g_17_1_76c896b1ff6bcea1f87a56b960ed6c6b.jpg",
-      description: "description very details",
-      atk: "20",
-      def: "10",
-      effect: "snow",
-      main_card: false,
-    },
-    new UniqueEntityId("c1813f74-6815-4639-b8c2-957f8c7ddceb")
-  );
+        "https://firebasestorage.googleapis.com/v0/b/card-game-18c32.appspot.com/o/malenia.png?alt=media&token=fd093cd7-b962-4ad9-9a46-f8d32d814152",
 
-  await prismaClient.card.create({
-    data: {
-      id: card.id,
-      name: card.name,
-      number: card.number,
-      description: card.description,
-      category: card.category,
-      atk: card.atk,
-      def: card.def,
-      effect: card.effect,
-      image_url: card.image_url,
-      main_card: card.main_card,
-      created_at: card.created_at,
+      description: "when this is invoked it deals damage to the first row",
+      atk: "10",
+      def: "0",
+      effect: "poison",
+      main_card: true,
     },
+    {
+      id: "6c292cf2-7dc6-496b-955c-79a75450e124",
+      name: "RENNALA QUEEN OF THE FULL MOON",
+      number: 2,
+      category: "mage",
+      image_url:
+        "https://firebasestorage.googleapis.com/v0/b/card-game-18c32.appspot.com/o/rennala.png?alt=media&token=9a238555-d092-47d5-8832-21d5442a827a",
+      description: "when this is invoked it deals damage to the second row",
+      atk: "10",
+      def: "0",
+      effect: "freeze",
+      main_card: true,
+    },
+  ];
+
+  cardPrans.forEach(async (item) => {
+    await prismaClient.card.create({
+      data: {
+        id: item.id,
+        name: item.name,
+        number: item.number,
+        description: item.description,
+        category: item.category,
+        atk: item.atk,
+        def: item.def,
+        effect: item.effect,
+        image_url: item.image_url,
+        main_card: item.main_card,
+        created_at: new Date(),
+      },
+    });
   });
 }
 

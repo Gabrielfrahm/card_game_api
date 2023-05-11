@@ -15,6 +15,7 @@ describe("deck prisma unit test", () => {
     await prismaClient.deck.deleteMany({ where: {} });
     await prismaClient.card.deleteMany({ where: {} });
     await prismaClient.deckCard.deleteMany({ where: {} });
+    await prismaClient.auth.deleteMany({ where: {} });
     await prismaClient.user.deleteMany({ where: {} });
   });
 
@@ -22,6 +23,7 @@ describe("deck prisma unit test", () => {
     await prismaClient.deck.deleteMany({ where: {} });
     await prismaClient.deckCard.deleteMany({ where: {} });
     await prismaClient.card.deleteMany({ where: {} });
+    await prismaClient.auth.deleteMany({ where: {} });
     await prismaClient.user.deleteMany({ where: {} });
   });
 

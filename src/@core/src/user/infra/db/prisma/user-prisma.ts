@@ -172,7 +172,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
     });
 
     if (!user) {
-      throw new NotFoundError(`Entity Not Found Using EMAIL ${email}`);
+      throw new NotFoundError(`Entity Not Found Using this e-mail`);
     }
     return user;
   }
