@@ -1,4 +1,5 @@
 import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
+import { JWTAdapter } from 'core/auth/infra';
 import { Request, Response, NextFunction } from 'express';
 
 import { Redis } from 'ioredis';
@@ -8,6 +9,8 @@ export class RedisCacheMiddleware implements NestMiddleware {
   constructor(
     @Inject('REDIS')
     private readonly redisClient: Redis,
+    @Inject('JWT')
+    private readonly jwtAdapter: JWTAdapter,
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -15,14 +18,20 @@ export class RedisCacheMiddleware implements NestMiddleware {
     let cacheKey: string;
     const checkQuery = Object.keys(req.query);
 
+    const [, token] = req.headers.authorization.split(' ');
+
+    const decoded = this.jwtAdapter.validateToken(token);
+
     switch (routeMethod) {
       case 'POST':
-        cacheKey = `deck:list`;
-        await this.redisClient.del(cacheKey);
+        if (req.params.userId) {
+          cacheKey = `deck:list:${req.params.userId}`;
+          await this.redisClient.del(cacheKey);
+        }
         break;
       case 'GET':
-        if (!req.params.id && checkQuery.length === 0) {
-          cacheKey = `deck:list`;
+        if (!req.params.id && req.params.userId && checkQuery.length === 0) {
+          cacheKey = `deck:list:${req.params.userId}`;
         }
         if (req.params.id) {
           cacheKey = `deck:${req.params.id}`;
@@ -35,12 +44,13 @@ export class RedisCacheMiddleware implements NestMiddleware {
       case 'PUT':
         cacheKey = `deck:${req.params.id}`;
         await this.redisClient.del(cacheKey);
-        await this.redisClient.del(`deck:list`);
+        await this.redisClient.del(`deck:list:${decoded['sub']}`);
+
         break;
       case 'DELETE':
         cacheKey = `deck:${req.params.id}`;
         await this.redisClient.del(cacheKey);
-        await this.redisClient.del(`deck:list`);
+        await this.redisClient.del(`deck:list:${decoded['sub']}`);
         break;
       default:
         break;
@@ -55,8 +65,8 @@ export class RedisCacheMiddleware implements NestMiddleware {
 
     switch (routeMethod) {
       case 'GET':
-        if (!req.params.id && checkQuery.length === 0) {
-          cacheKey = `deck:list`;
+        if (!req.params.id && req.params.userId && checkQuery.length === 0) {
+          cacheKey = `deck:list:${req.params.userId}`;
         }
         if (req.params.id) {
           cacheKey = `deck:${req.params.id}`;
