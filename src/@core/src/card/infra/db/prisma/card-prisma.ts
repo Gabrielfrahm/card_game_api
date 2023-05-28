@@ -116,11 +116,35 @@ export class CardPrismaRepository implements CardRepository.Repository {
       skip: skip,
     });
 
+    const count = await this.cardModel.card.count({
+      where: {
+        AND: [
+          {
+            ...(props.filter && {
+              [props.column]: {
+                contains: props.filter,
+              },
+            }),
+          },
+        ],
+      },
+      ...(props.filter && {
+        where: {
+          [props.column]: {
+            contains: props.filter,
+          },
+        },
+      }),
+      orderBy: {
+        [props.sort ?? "created_at"]: props.sort_dir ?? "desc",
+      },
+    });
+
     return new CardRepository.CardSearchResult({
       items: cards.map((item) => CardModelMapper.toEntity(item)),
       current_page: props.page,
       per_page: props.per_page,
-      total: cards.length,
+      total: count,
       filter: props.filter,
       sort: props.sort,
       sort_dir: props.sort_dir,
