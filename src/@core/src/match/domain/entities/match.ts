@@ -1,4 +1,9 @@
-import { Entity, UniqueEntityId } from "#seedwork/domain";
+import {
+  Entity,
+  EntityValidationError,
+  UniqueEntityId,
+} from "#seedwork/domain";
+import { MatchValidatorFactory } from "../validator/create";
 
 export type MatchProps = {
   host_id: string;
@@ -9,19 +14,19 @@ export type MatchProps = {
 
 export class Match extends Entity<MatchProps> {
   constructor(public readonly props: MatchProps, id?: UniqueEntityId) {
-    // User.validate(props);
+    Match.validate(props);
     super(props, id);
-    this.props.status = this.status ?? "awaiting players";
+    this.props.status = this.status ?? "awaiting_players";
     this.props.created_at = this.created_at ?? new Date();
   }
 
-  // static validate(props: MatchProps) {
-  //   const validator = UserValidatorFactory.create();
-  //   const isValid = validator.validate(props);
-  //   if (!isValid) {
-  //     throw new EntityValidationError(validator.errors);
-  //   }
-  // }
+  static validate(props: MatchProps) {
+    const validator = MatchValidatorFactory.create();
+    const isValid = validator.validate(props);
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors);
+    }
+  }
 
   get host_id(): string {
     return this.props.host_id;
