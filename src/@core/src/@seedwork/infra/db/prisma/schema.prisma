@@ -19,6 +19,9 @@ model User {
   auths Auth?
   Deck  Deck[]
 
+  hostedMatches       Match[] @relation("Host")
+  participatedMatches Match[] @relation("Participant")
+
   @@map("users")
 }
 
@@ -76,4 +79,15 @@ model DeckCard {
   updated_at DateTime @default(now())
 
   @@map("deck_cards")
+}
+
+model Match {
+  id             String   @id @default(uuid())
+  host_id        String   @unique
+  user           User     @relation("Host", fields: [host_id], references: [id])
+  participant_id String?  @unique
+  participant    User?    @relation("Participant", fields: [participant_id], references: [id])
+  status         String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
 }
