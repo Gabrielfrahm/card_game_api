@@ -18,6 +18,9 @@
       "#deck/*": [
         "./deck/*"
       ],
+      "#match/*": [
+        "./match/*"
+      ],
     },
     "outDir": "./dist",
   },

@@ -22,7 +22,11 @@
     "#deck/domain": "./dist/deck/domain/index.js",
     "#deck/application": "./dist/deck/application/index.js",
     "#deck/infra": "./dist/deck/infra/index.js",
-    "#deck/*": "./dist/deck/*.js"
+    "#deck/*": "./dist/deck/*.js",
+    "#match/domain": "./dist/match/domain/index.js",
+    "#match/application": "./dist/match/application/index.js",
+    "#match/infra": "./dist/match/infra/index.js",
+    "#match/*": "./dist/match/*.js"
   },
   "exports": {
     "./@seedwork/application": "./dist/@seedwork/application/index.js",
@@ -83,6 +87,15 @@
       ],
       "deck/infra": [
         "./dist/deck/infra/index.d.ts"
+      ],
+      "match/application": [
+        "./dist/match/application/index.d.ts"
+      ],
+      "match/domain": [
+        "./dist/match/domain/index.d.ts"
+      ],
+      "match/infra": [
+        "./dist/match/infra/index.d.ts"
       ]
     }
   },
